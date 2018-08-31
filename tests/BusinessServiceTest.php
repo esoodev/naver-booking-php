@@ -23,7 +23,7 @@ final class BusinessServiceTest extends TestCase
     const TEST_GET_BUSINESSES = 0;
     const TEST_GET_BUSINESS = 0;
     const TEST_GET_BUSINESSIDS_BY_NAME = 0;
-    const TEST_GET_BUSINESSES_BY_NAME = 1;
+    const TEST_GET_BUSINESSES_BY_NAME = 0;
     const TEST_CREATE_BUSINESS = 0;
     const TEST_EDIT_BUSINESS = 0;
 

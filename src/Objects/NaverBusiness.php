@@ -145,6 +145,21 @@ class NaverBusiness
         $this->setData($f);
     }
 
+    public function getOwnerName()
+    {
+        $f['reprOwnerName'] = $this->reprOwnerName;
+        return $f;
+    }
+
+    public function setOwnerName($newOwnerName, $returnJson = false)
+    {
+        $f['reprOwnerName'] = $newOwnerName;
+        if ($returnJson) {
+            return $f;
+        }
+        $this->setData($f);
+    }
+
     public function getBusinessEmail()
     {
         $f['email'] = $this->email;
@@ -188,6 +203,21 @@ class NaverBusiness
             return $f;
         }
         return $f;
+    }
+
+    public function getAgencyKey()
+    {
+        $f['agencyKey'] = $this->agencyKey;
+        return $f;
+    }
+
+    public function setAgencyKey($newAgencyKey, $returnJson = false)
+    {
+        $f['agencyKey'] = $newAgencyKey;
+        if ($returnJson) {
+            return $f;
+        }
+        $this->setData($f);
     }
 
     private static function _arraySetValuesNull(&$arr)
