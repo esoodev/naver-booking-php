@@ -9,7 +9,7 @@ class ArrayHelper
 
     // Search an array of objects for the given key value pair
     // and return all the matching objects.
-    public static function searchForKey(string $keyName, string $value, $array)
+    public static function searchForKey($keyName, $value, $array)
     {
         $objs = [];
         foreach ($array as $key => $val) {
@@ -20,8 +20,8 @@ class ArrayHelper
         return $objs;
     }
 
-    public static function mapForKey(string $keyName, string $value,
-        string $keyMapName, $array) {
+    public static function mapForKey($keyName, $value, $keyMapName, $array)
+    {
         $indices = [];
 
         foreach ($array as $key => $val) {
@@ -32,7 +32,7 @@ class ArrayHelper
         return $indices;
     }
 
-    public static function extract(string $keyName, $array)
+    public static function extract($keyName, $array)
     {
         return array_map(function ($v) use ($keyName) {
             return $v[$keyName];

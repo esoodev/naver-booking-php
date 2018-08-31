@@ -85,7 +85,7 @@ class NaverAddress
         }
     }
 
-    public function setDetail(string $newDetail, $returnJson = false)
+    public function setDetail($newDetail, $returnJson = false)
     {
         $f['detail'] = $newDetail;
         if ($returnJson) {

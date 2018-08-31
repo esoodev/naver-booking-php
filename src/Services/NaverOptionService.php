@@ -29,8 +29,8 @@ class NaverOptionService extends NaverServiceBase
         return json_decode($res, true);
     }
 
-    public function getOptionCategoryIdByName(int $businessId,
-        string $categoryName) {
+    public function getOptionCategoryIdByName(int $businessId, $categoryName)
+    {
         $categories = $this->getOptionCategories($businessId);
         $categoryId = ArrayHelper::mapForKey('name', $categoryName, 'categoryId',
             $categories)[0];

@@ -5,9 +5,8 @@ require_once dirname(__FILE__) . "/NaverServiceBase.php";
 class NaverMiscService extends NaverServiceBase
 {
 
-    public function searchAddress(string $query, $pageSize = 1,
-        $reformatAddress = true)
-    {
+    public function searchAddress($query, $pageSize = 1,
+        $reformatAddress = true) {
         $res = $this->requestHandler->get(
             $this->hostUri . "/v3.0/addresses?" .
             "query=${query}&pageSize=${pageSize}");
@@ -18,7 +17,7 @@ class NaverMiscService extends NaverServiceBase
     /**
      * Returns imageUrl on success.
      */
-    public function uploadImageFile(string $fileLoc, $toJSON = false)
+    public function uploadImageFile($fileLoc, $toJSON = false)
     {
         $imageFile = new CURLFile($fileLoc);
         $res = $this->requestHandler->postData(

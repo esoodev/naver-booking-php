@@ -7,18 +7,18 @@ require_once dirname(__FILE__) . "/../config/NaverBookingConfig.php";
 class NaverServiceBase
 {
 
-    public function __construct(string $accessToken, $hostType = 'development')
+    public function __construct($accessToken, $hostType = 'development')
     {
         $this->requestHandler = new NaverRequestHandler($accessToken);
         $this->hostUri = self::getHostUri($hostType);
     }
 
-    public static function fromAccessToken(string $accessToken)
+    public static function fromAccessToken($accessToken)
     {
         return new self($accessToken);
     }
 
-    public static function getHostUri(string $hostType)
+    public static function getHostUri($hostType)
     {
         switch ($hostType) {
             case 'development':

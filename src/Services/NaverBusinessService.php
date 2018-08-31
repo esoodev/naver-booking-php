@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . "/../Objects/NaverBusiness.php";
 
 class NaverBusinessService extends NaverServiceBase
 {
-    public function getBusinesses(string $accountName)
+    public function getBusinesses($accountName)
     {
         $res = $this->requestHandler->get(
             $this->hostUri . "/v3.0/businesses?account=${accountName}");
@@ -19,8 +19,8 @@ class NaverBusinessService extends NaverServiceBase
         return json_decode($res);
     }
 
-    public function getBusinessIdsByBusinessName(string $accountName,
-        string $businessName) {
+    public function getBusinessIdsByBusinessName($accountName,
+        $businessName) {
         $businesses = $this->getBusinesses($accountName);
         return ArrayHelper::mapForKey('name', $businessName,
             'businessId', $businesses);
@@ -29,13 +29,11 @@ class NaverBusinessService extends NaverServiceBase
     /**
      * Returns the first occurence.
      */
-    public function getBusinessIdByBusinessName(string $accountName,
-        string $businessName) {
+    public function getBusinessIdByBusinessName($accountName, $businessName) {
         return $this->getBusinessIdsByBusinessName($accountName, $businessName)[0];
     }
 
-    public function getBusinessesByBusinessName(string $accountName,
-        string $businessName) {
+    public function getBusinessesByBusinessName($accountName, $businessName) {
         $businesses = $this->getBusinesses($accountName);
         return ArrayHelper::searchForKey('name', $businessName, $businesses);
     }

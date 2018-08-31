@@ -83,8 +83,8 @@ class NaverOption
         $f['name'] = $this->name;
         return $f;
     }
-    
-    public function setName(string $newName, $returnJson = false)
+
+    public function setName($newName, $returnJson = false)
     {
         $f['name'] = $newName;
         if ($returnJson) {
@@ -98,7 +98,7 @@ class NaverOption
         $f['categoryId'] = $this->categoryId;
         return $f;
     }
-    
+
     public function setCategoryId(int $newCategoryId, $returnJson = false)
     {
         $f['categoryId'] = $newCategoryId;
@@ -113,8 +113,8 @@ class NaverOption
         $f['desc'] = $this->desc;
         return $f;
     }
-    
-    public function setDesc(string $newDesc, $returnJson = false)
+
+    public function setDesc($newDesc, $returnJson = false)
     {
         $f['desc'] = $newDesc;
         if ($returnJson) {
@@ -128,8 +128,8 @@ class NaverOption
         $f['optionResources'] = $this->optionResources;
         return $f;
     }
-    
-    public function setMainImage(string $imageUrl, $returnJson = false)
+
+    public function setMainImage($imageUrl, $returnJson = false)
     {
         $f['optionResources'][0]['resourceTypeCode'] =
         NaverDictionary::RESOURCE_TYPE_CODES['대표이미지'];

@@ -49,25 +49,25 @@ class NaverRestaurantBusiness extends NaverBusiness
     public function getBusinessName()
     {return parent::getBusinessName();}
 
-    public function setBusinessName(string $newBusinessName, $returnJson = false)
+    public function setBusinessName($newBusinessName, $returnJson = false)
     {return parent::setBusinessName($newBusinessName, $returnJson);}
 
     public function getBusinessEmail()
     {return parent::getBusinessEmail();}
 
-    public function setBusinessEmail(string $newBusinessEmail, $returnJson = false)
+    public function setBusinessEmail($newBusinessEmail, $returnJson = false)
     {return parent::setBusinessEmail($newBusinessEmail, $returnJson = false);}
 
     public function getServiceName()
     {return parent::getServiceName();}
 
-    public function setServiceName(string $newServiceName, $returnJson = false)
+    public function setServiceName($newServiceName, $returnJson = false)
     {return parent::setServiceName($newServiceName, $returnJson = false);}
 
     public function getServiceDesc()
     {return parent::getServiceDesc();}
 
-    public function setServiceDesc(string $newServiceDesc, $returnJson = false)
+    public function setServiceDesc($newServiceDesc, $returnJson = false)
     {return parent::setServiceDesc($newServiceDesc, $returnJson = false);}
 
 }

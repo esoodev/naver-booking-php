@@ -94,12 +94,12 @@ class NaverBusiness
 
     public function getBusinessId()
     {
-        if(isset($this->businessId)){
+        if (isset($this->businessId)) {
             return $this->businessId;
         }
         return null;
     }
-    
+
     public function getAddrs()
     {
         $f['addressJson'] = $this->addressJson;
@@ -136,7 +136,7 @@ class NaverBusiness
         return $f;
     }
 
-    public function setBusinessName(string $newBusinessName, $returnJson = false)
+    public function setBusinessName($newBusinessName, $returnJson = false)
     {
         $f['name'] = $newBusinessName;
         if ($returnJson) {
@@ -151,7 +151,7 @@ class NaverBusiness
         return $f;
     }
 
-    public function setBusinessEmail(string $newBusinessEmail, $returnJson = false)
+    public function setBusinessEmail($newBusinessEmail, $returnJson = false)
     {
         $f['email'] = $newBusinessEmail;
         if ($returnJson) {
@@ -166,7 +166,7 @@ class NaverBusiness
         return $f;
     }
 
-    public function setServiceName(string $newServiceName, $returnJson = false)
+    public function setServiceName($newServiceName, $returnJson = false)
     {
         $f['serviceName'] = $newServiceName;
         if ($returnJson) {
@@ -181,7 +181,7 @@ class NaverBusiness
         return $f;
     }
 
-    public function setServiceDesc(string $newServiceDesc, $returnJson = false)
+    public function setServiceDesc($newServiceDesc, $returnJson = false)
     {
         $f['desc'] = $newServiceDesc;
         if ($returnJson) {
