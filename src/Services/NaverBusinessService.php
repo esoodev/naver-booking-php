@@ -12,7 +12,7 @@ class NaverBusinessService extends NaverServiceBase
         return json_decode($res, true);
     }
 
-    public function getBusiness(int $businessId)
+    public function getBusiness($businessId)
     {
         $res = $this->requestHandler->get(
             $this->hostUri . "/v3.1/businesses/{$businessId}");
@@ -45,7 +45,7 @@ class NaverBusinessService extends NaverServiceBase
         return json_decode($res);
     }
 
-    public function editBusinessById(int $businessId, array $data)
+    public function editBusinessById($businessId, array $data)
     {
         $data['businessId'] = $businessId;
         $res = $this->requestHandler->patch(
