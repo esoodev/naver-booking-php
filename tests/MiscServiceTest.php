@@ -20,8 +20,9 @@ final class MiscServiceTest extends TestCase
         '1b212638e653d4570087a32631d518588a45a30259d174bec' .
         'c0583dee7f5aca17515d58d15911e416';
 
-    const TEST_SEARCH_ADDRESS = 1;
-    const TEST_UPLOAD_IMAGE_FILE = 1;
+    const TEST_SEARCH_ADDRESS = 0;
+    const TEST_UPLOAD_IMAGE_FILE = 0;
+    const TEST_UPLOAD_IMAGE_URL = 1;
 
     public function testCanSearchAddress(): void
     {
@@ -46,6 +47,23 @@ final class MiscServiceTest extends TestCase
                 '/tests/inputs/sample460.jpeg';
             $res = $service->uploadImageFile($fileLoc);
             self::_outputFile('upload-image-file-res.json',
+                json_encode($res, JSON_UNESCAPED_UNICODE));
+
+            $this->expectOutputString('');
+            var_dump($res);
+        } else {
+            echo ("\nSkipping testCanUploadImageFile()");
+        }
+    }
+
+    public function testCanUploadImageUrl(): void
+    {
+        if (self::TEST_UPLOAD_IMAGE_URL) {
+            $service = new NaverMiscService(self::ACCESS_TOKEN);
+            $imgUrl = 'http://c2.poing.co.kr/PIMAGE-original/' .
+                'MjAxNjA5/147513969657ecd8708a574.jpeg';
+            $res = $service->uploadImageUrl($imgUrl);
+            self::_outputFile('upload-image-url-res.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
 
             $this->expectOutputString('');

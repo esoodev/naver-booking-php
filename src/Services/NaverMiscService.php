@@ -29,4 +29,18 @@ class NaverMiscService extends NaverServiceBase
         }
     }
 
+    /**
+     * Returns imageUrl on success.
+     */
+    public function uploadImageUrl($imageUrl, $toJSON = false)
+    {
+        $res = $this->requestHandler->postData(
+            $this->hostUri . "/v3.0/images", ['imageUrl' => $imageUrl]);
+        if ($toJSON) {
+            return json_decode($res, true);
+        } else {
+            return json_decode($res, true)['imageUrl'];
+        }
+    }
+
 }
