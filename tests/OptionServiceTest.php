@@ -32,7 +32,7 @@ final class ProductServiceTest extends TestCase
     public function testCanGetOptions(): void
     {
         if (self::TEST_GET_OPTIONS) {
-            $service = new OptionService(self::ACCESS_TOKEN);
+            $service = new NaverOptionService(self::ACCESS_TOKEN);
             $res = $service->getOptions(16363);
             self::_outputFile('get-options.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
@@ -47,7 +47,7 @@ final class ProductServiceTest extends TestCase
     public function testCanGetOption(): void
     {
         if (self::TEST_GET_OPTION) {
-            $service = new OptionService(self::ACCESS_TOKEN);
+            $service = new NaverOptionService(self::ACCESS_TOKEN);
             $res = $service->getOption(16363, 146134);
             self::_outputFile('get-option.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
@@ -62,7 +62,7 @@ final class ProductServiceTest extends TestCase
     public function testCanGetOptionCategories(): void
     {
         if (self::TEST_GET_OPTION_CATEGORIES) {
-            $service = new OptionService(self::ACCESS_TOKEN);
+            $service = new NaverOptionService(self::ACCESS_TOKEN);
             $res = $service->getOptionCategories(16363, 146134);
             self::_outputFile('get-option-categories.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
@@ -77,7 +77,7 @@ final class ProductServiceTest extends TestCase
     public function testCanGetOptionCategoryIdByName(): void
     {
         if (self::TEST_GET_OPTION_CATEGORY_ID_BY_NAME) {
-            $service = new OptionService(self::ACCESS_TOKEN);
+            $service = new NaverOptionService(self::ACCESS_TOKEN);
             $categoryId = $service->getOptionCategoryIdByName(16363, '카테고리 미지정');
             self::_outputFile('get-option-category-id-by-name.json',
                 json_encode(['카테고리 미지정' => $categoryId], JSON_UNESCAPED_UNICODE));
@@ -92,8 +92,8 @@ final class ProductServiceTest extends TestCase
     public function testCanCreateOption(): void
     {
         if (self::TEST_CREATE_OPTION) {
-            $service = new OptionService(self::ACCESS_TOKEN);
-            $option = Option::example();
+            $service = new NaverOptionService(self::ACCESS_TOKEN);
+            $option = NaverOption::example();
             $res = $service->createOption(16363, $option);
             self::_outputFile('create-option-body.json',
                 json_encode($option, JSON_UNESCAPED_UNICODE));
@@ -110,8 +110,8 @@ final class ProductServiceTest extends TestCase
     public function testCanEditOption(): void
     {
         if (self::TEST_EDIT_OPTION) {
-            $service = new OptionService(self::ACCESS_TOKEN);
-            $option = Option::example();
+            $service = new NaverOptionService(self::ACCESS_TOKEN);
+            $option = NaverOption::example();
             $data = $option->setDesc('새로운 설명! 새로운 설명! 새로운 설명! 새로운 설명!', true);
             $res = $service->editOption(16363, 146164, $data);
             self::_outputFile('edit-option-data.json',
@@ -129,7 +129,7 @@ final class ProductServiceTest extends TestCase
     public function testCanDeleteOption(): void
     {
         if (self::TEST_DELETE_OPTION) {
-            $service = new OptionService(self::ACCESS_TOKEN);
+            $service = new NaverOptionService(self::ACCESS_TOKEN);
             $res = $service->deleteOption(16363, 146131);
             self::_outputFile('delete-option.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
@@ -144,7 +144,7 @@ final class ProductServiceTest extends TestCase
     public function testCanDeleteAllOptions(): void
     {
         if (self::TEST_DELETE_ALL_OPTIONS) {
-            $service = new OptionService(self::ACCESS_TOKEN);
+            $service = new NaverOptionService(self::ACCESS_TOKEN);
             $res = $service->deleteAllOptions(16363);
             self::_outputFile('delete-all-options.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
@@ -158,7 +158,7 @@ final class ProductServiceTest extends TestCase
 
     private static function _outputFile($filename, $data): void
     {
-        $fp = fopen(dirname(__FILE__) . "/outputs/OptionService/${filename}", 'w');
+        $fp = fopen(dirname(__FILE__) . "/outputs/NaverOptionService/${filename}", 'w');
         fwrite($fp, $data);
         fclose($fp);
     }

@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . "/NaverDictionary.php";
 require_once dirname(__FILE__) . "/../Helpers/ArrayHelper.php";
 
 /**
- * Misc Service 의 Search 개념에 맞음. Business 에 적용하려면 toReformattedJSON() 을 사용.
+ * Misc Service 의 Search 개념에 맞음. NaverBusiness 에 적용하려면 toReformattedJSON() 을 사용.
  */
 class NaverAddress
 {
@@ -58,7 +58,7 @@ class NaverAddress
     }
 
     /**
-     * Business 에 사용할 형식으로 변환.
+     * NaverBusiness 에 사용할 형식으로 변환.
      */
     public function toReformatJSON()
     {

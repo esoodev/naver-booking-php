@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . "/NaverDictionary.php";
 require_once dirname(__FILE__) . "/../Helpers/ArrayHelper.php";
 
 /**
- * Option 는 API 문서상 Option 과 동의.
+ * NaverOption 는 API 문서상 NaverOption 과 동의.
  */
 class NaverOption
 {

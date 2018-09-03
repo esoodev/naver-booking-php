@@ -45,9 +45,9 @@ class NaverOptionService extends NaverServiceBase
     /**
      * Product 에 연결 :
      * getOptionCategoryIdByName($businessId, '카테고리 미지정') 통해 categoryId 받은 후
-     * Option 에 setCategoryId(categoryid) 해야함.
+     * NaverOption 에 setCategoryId(categoryid) 해야함.
      */
-    public function createOption(int $businessId, Option $option)
+    public function createOption(int $businessId, NaverOption $option)
     {
         $res = $this->requestHandler->post(
             $this->hostUri . "/v3.1/businesses/${businessId}/options",

@@ -26,6 +26,7 @@ final class BusinessServiceTest extends TestCase
     const TEST_GET_BUSINESSES_BY_NAME = 0;
     const TEST_CREATE_BUSINESS = 0;
     const TEST_EDIT_BUSINESS = 0;
+    const TEST_EDIT_BUSINESS_ADDR_BY_ID = 1;
 
     public function testCanGetBusinesses(): void
     {
@@ -125,6 +126,25 @@ final class BusinessServiceTest extends TestCase
             $res = $service->editBusinessById(16363, $data);
 
             self::_outputFile('edit-business-res.json',
+                json_encode($res, JSON_UNESCAPED_UNICODE));
+            $this->expectOutputString('');
+            var_dump($res);
+        } else {
+            echo ("\nSkipping testCanEditBusiness()");
+        }
+    }
+
+    public function testCanEditBusinessAddressById(): void
+    {
+        if (self::TEST_EDIT_BUSINESS_ADDR_BY_ID) {
+            $service = new NaverBusinessService(self::ACCESS_TOKEN);
+            $addrRoad1 = "서울특별시 강남구 압구정로 165";
+            $addrRoad2 = "서울특별시 강남구 강남대로102길 34";
+            $addrJibun1 = "서울특별시 서초구 잠원로 51";
+            $addrJibun2 = "서울특별시 강남구 신사동 623-2";
+            $res = $service->editBusinessAddressById(16363, [$addrJibun2, '테스트 상세'],
+                true);
+            self::_outputFile('edit-business-addr-res.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
             $this->expectOutputString('');
             var_dump($res);

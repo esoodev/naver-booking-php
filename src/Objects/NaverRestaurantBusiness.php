@@ -40,8 +40,8 @@ class NaverRestaurantBusiness extends NaverBusiness
     public function setData(array $data)
     {return parent::setData($data);}
 
-    public function getAddrs()
-    {return parent::getAddrs();}
+    public function getAddresses()
+    {return parent::getAddresses();}
 
     public function getPhones()
     {return parent::getPhones();}

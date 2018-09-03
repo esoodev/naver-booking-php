@@ -100,15 +100,42 @@ class NaverBusiness
         return null;
     }
 
-    public function getAddrs()
+    public function getAddresses()
     {
         $f['addressJson'] = $this->addressJson;
         return $f;
     }
 
-    public function setAddrs(array $newAddressJson, $returnJson = false)
+    public function setAddresses(array $newAddressJson, $returnJson = false)
     {
         $f['addressJson'] = $newAddressJson;
+        if ($returnJson) {
+            return $f;
+        }
+        $this->setData($f);
+    }
+
+    public function setAddressJibun(string $newAddressJibun, $returnJson = false)
+    {
+        $f['addressJson']['jibun'] = $newAddressJibun;
+        if ($returnJson) {
+            return $f;
+        }
+        $this->setData($f);
+    }
+
+    public function setAddressRoad(string $newAddressRoad, $returnJson = false)
+    {
+        $f['addressJson']['roadAddr'] = $newAddressRoad;
+        if ($returnJson) {
+            return $f;
+        }
+        $this->setData($f);
+    }
+
+    public function setAddressDetail(string $newAddressDetail, $returnJson = false)
+    {
+        $f['addressJson']['detail'] = $newAddressDetail;
         if ($returnJson) {
             return $f;
         }

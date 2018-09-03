@@ -21,21 +21,18 @@ final class CombinedTest extends TestCase
         'c0583dee7f5aca17515d58d15911e416';
     const BUSINESS_ID = 16363;
 
-    const TEST_EDIT_BUSINESS_ADDR_TO_SEARCH_RES = 0;
-    const TEST_LINK_OPTION_TO_BUSINESS = 1;
+    const TEST_EDIT_BUSINESS_ADDR_TO_SEARCH_RES = 1;
+    const TEST_LINK_OPTION_TO_BUSINESS = 0;
 
     public function testCanEditBusinessAddressToSearchResult(): void
     {
         if (self::TEST_EDIT_BUSINESS_ADDR_TO_SEARCH_RES) {
-            $bs = new BusinessService(self::ACCESS_TOKEN);
-            $ms = new MiscService(self::ACCESS_TOKEN);
-            $business = new Business($bs->getBusiness(self::BUSINESS_ID));
-            $address = (new Address($ms->searchAddress('김가네')[0]))->toReformatJSON();
-
+            $bs = new NaverBusinessService(self::ACCESS_TOKEN);
+            $ms = new NaverMiscService(self::ACCESS_TOKEN);
+            $business = new NaverBusiness($bs->getBusiness(self::BUSINESS_ID));
+            $address = (new NaverAddress($ms->searchAddress('김가네')[0]))->toReformatJSON();
             self::_outputFile('edit-address-search-addr.json',
                 json_encode($address, JSON_UNESCAPED_UNICODE));
-
-            $body = $business->setAddrs($address, true);
 
             $res = $bs->editBusinessById($business->getBusinessId(), $body);
 
@@ -51,15 +48,15 @@ final class CombinedTest extends TestCase
 
     public function testCanLinkOptionToBusiness(): void
     {
-        $bs = new BusinessService(self::ACCESS_TOKEN);
-        $os = new OptionService(self::ACCESS_TOKEN);
-        $ms = new MiscService(self::ACCESS_TOKEN);
+        $bs = new NaverBusinessService(self::ACCESS_TOKEN);
+        $os = new NaverOptionService(self::ACCESS_TOKEN);
+        $ms = new NaverMiscService(self::ACCESS_TOKEN);
 
         $businessId = $bs->getBusinessIdByBusinessName('trustusdev',
             '아웃백 스테이크 하아 힘들다!');
         $categoryId = $os->getDefaultOptionCategoryId($businessId);
 
-        $option = Option::example();
+        $option = NaverOption::example();
 
         // 이미지 업로드
         $imgFileUrl = $ms->uploadImageFile(dirname(__FILE__) .

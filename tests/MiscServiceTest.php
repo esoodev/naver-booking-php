@@ -26,7 +26,7 @@ final class MiscServiceTest extends TestCase
     public function testCanSearchAddress(): void
     {
         if (self::TEST_SEARCH_ADDRESS) {
-            $service = new MiscService(self::ACCESS_TOKEN);
+            $service = new NaverMiscService(self::ACCESS_TOKEN);
             $res = $service->searchAddress('트러스트어스', 10);
             self::_outputFile('search-address.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
@@ -41,7 +41,7 @@ final class MiscServiceTest extends TestCase
     public function testCanUploadImageFile(): void
     {
         if (self::TEST_UPLOAD_IMAGE_FILE) {
-            $service = new MiscService(self::ACCESS_TOKEN);
+            $service = new NaverMiscService(self::ACCESS_TOKEN);
             $fileLoc = '/Users/nathanlee/Work/docker-naver-booking/lib' .
                 '/tests/inputs/sample460.jpeg';
             $res = $service->uploadImageFile($fileLoc);
@@ -57,7 +57,7 @@ final class MiscServiceTest extends TestCase
 
     private static function _outputFile($filename, $data): void
     {
-        $fp = fopen(dirname(__FILE__) . "/outputs/MiscService/${filename}", 'w');
+        $fp = fopen(dirname(__FILE__) . "/outputs/NaverMiscService/${filename}", 'w');
         fwrite($fp, $data);
         fclose($fp);
     }

@@ -15,8 +15,8 @@ final class BusinessTest extends TestCase
     public function testCangetAddrs(): void
     {
         if (self::TEST_GET_ADDRESSES) {
-            $business = Business::example();
-            $addrs = $business->getAddrs();
+            $business = NaverBusiness::example();
+            $addrs = $business->getAddresses();
             self::_outputFile('get-addresses.json',
                 json_encode($addrs, JSON_UNESCAPED_UNICODE));
             $this->assertEquals(0, 0);
@@ -29,10 +29,10 @@ final class BusinessTest extends TestCase
     {
         if (self::TEST_SHOW_REQUIRED_FIELDS) {
             self::_outputFile('required-fields.json',
-                json_encode(Business::requiredFields(), JSON_UNESCAPED_UNICODE));
+                json_encode(NaverBusiness::requiredFields(), JSON_UNESCAPED_UNICODE));
 
             $this->expectOutputString('');
-            var_dump(Business::requiredFields());
+            var_dump(NaverBusiness::requiredFields());
 
         } else {
             echo ("\nSkipping testCanShowRequiredFields()");
@@ -41,7 +41,7 @@ final class BusinessTest extends TestCase
 
     private static function _outputFile($filename, $data): void
     {
-        $fp = fopen(dirname(__FILE__) . "/outputs/Business/${filename}", 'w');
+        $fp = fopen(dirname(__FILE__) . "/outputs/NaverBusiness/${filename}", 'w');
         fwrite($fp, $data);
         fclose($fp);
     }

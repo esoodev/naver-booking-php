@@ -29,16 +29,18 @@ class NaverBusinessService extends NaverServiceBase
     /**
      * Returns the first occurence.
      */
-    public function getBusinessIdByBusinessName($accountName, $businessName) {
+    public function getBusinessIdByBusinessName($accountName, $businessName)
+    {
         return $this->getBusinessIdsByBusinessName($accountName, $businessName)[0];
     }
 
-    public function getBusinessesByBusinessName($accountName, $businessName) {
+    public function getBusinessesByBusinessName($accountName, $businessName)
+    {
         $businesses = $this->getBusinesses($accountName);
         return ArrayHelper::searchForKey('name', $businessName, $businesses);
     }
 
-    public function createBusiness(Business $business)
+    public function createBusiness(NaverBusiness $business)
     {
         $res = $this->requestHandler->post(
             $this->hostUri . "/v3.1/businesses", json_encode($business));
@@ -48,6 +50,32 @@ class NaverBusinessService extends NaverServiceBase
     public function editBusinessById($businessId, array $data)
     {
         $data['businessId'] = $businessId;
+        $res = $this->requestHandler->patch(
+            $this->hostUri . "/v3.1/businesses/${businessId}",
+            json_encode($data));
+        return $res;
+    }
+
+    /**
+     * More specific hard-coded instructions. May need to be modified if data
+     * representation within NaverBusiness class changes.
+     * $address[jibun/road address, address detail]
+     */
+    public function editBusinessAddressById(int $businessId, array $address,
+        $isRoadAddr = false) {
+        $business = new NaverBusiness();
+        $newAddressJson;
+        if ($isRoadAddr) {
+            $newAddressJson = $business->setAddressRoad($address[0], true);
+        } else {
+            $newAddressJson = $business->setAddressJibun($address[0], true);
+        }
+        $newAddressJson = array_merge_recursive($newAddressJson,
+            $business->setAddressDetail($address[1], true));
+
+        $data['businessId'] = $businessId;
+        $data = array_merge_recursive($data, $newAddressJson);
+
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}",
             json_encode($data));

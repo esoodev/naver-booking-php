@@ -39,8 +39,8 @@ final class RestaurantBusinessTest extends TestCase
     public function testCangetAddrs(): void
     {
         if (self::TEST_GET_ADDRESSES) {
-            $business = Business::example();
-            $addrs = $business->getAddrs();
+            $business = NaverBusiness::example();
+            $addrs = $business->getAddresses();
             self::_outputFile('get-addresses.json',
                 json_encode($addrs, JSON_UNESCAPED_UNICODE));
             $this->assertEquals(0, 0);
