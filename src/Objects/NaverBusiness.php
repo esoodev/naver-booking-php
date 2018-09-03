@@ -157,6 +157,42 @@ class NaverBusiness
         $this->setData($f);
     }
 
+    public function setPhoneWired(string $newPhoneWired, $returnJson = false)
+    {
+        $f['phoneInformationJson']['wiredPhone'] = $newPhoneWired;
+        if ($returnJson) {
+            return $f;
+        }
+        $this->setData($f);
+    }
+    
+    public function setPhoneRep(string $newPhoneRep, $returnJson = false)
+    {
+        $f['phoneInformationJson']['reprPhone'] = $newPhoneRep;
+        if ($returnJson) {
+            return $f;
+        }
+        $this->setData($f);
+    }
+
+    public function setPhoneList(array $newPhoneList, $returnJson = false)
+    {
+        $f['phoneInformationJson']['phoneList'] = $newPhoneList;
+        if ($returnJson) {
+            return $f;
+        }
+        $this->setData($f);
+    }
+
+    public function addPhoneList(string $newPhone, $returnJson = false)
+    {
+        array_push($this->phoneInformationJson['phoneList'], $newPhone);
+        if ($returnJson) {
+            $f['phoneInformationJson'] = $this->phoneInformationJson;
+            return $f;
+        }
+    }
+
     public function getBusinessName()
     {
         $f['name'] = $this->name;
