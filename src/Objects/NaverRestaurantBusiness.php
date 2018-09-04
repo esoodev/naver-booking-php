@@ -70,8 +70,7 @@ class NaverRestaurantBusiness extends NaverBusiness
     /**
      * Setters
      */
-
-    public function setAddresses($newAddressJson, $returnJson = false)
+    public function setAddresses(array $newAddressJson, $returnJson = false)
     {return parent::setAddresses($newAddressJson, $returnJson);}
 
     public function setBusinessName($newBusinessName, $returnJson = false)
