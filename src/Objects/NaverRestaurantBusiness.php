@@ -37,11 +37,17 @@ class NaverRestaurantBusiness extends NaverBusiness
     public function toJSON()
     {return parent::toJSON();}
 
-    public function setData(array $data)
-    {return parent::setData($data);}
-
+    /**
+     * Getters
+     */
     public function getAddresses()
     {return parent::getAddresses();}
+
+    public function getBusinessId()
+    {return parent::getBusinessId();}
+
+    public function getBusinessEmail()
+    {return parent::getBusinessEmail();}
 
     public function getPhones()
     {return parent::getPhones();}
@@ -49,25 +55,35 @@ class NaverRestaurantBusiness extends NaverBusiness
     public function getBusinessName()
     {return parent::getBusinessName();}
 
-    public function setBusinessName($newBusinessName, $returnJson = false)
-    {return parent::setBusinessName($newBusinessName, $returnJson);}
-
-    public function getBusinessEmail()
-    {return parent::getBusinessEmail();}
-
-    public function setBusinessEmail($newBusinessEmail, $returnJson = false)
-    {return parent::setBusinessEmail($newBusinessEmail, $returnJson = false);}
+    public function getOwnerName()
+    {return parent::getOwnerName();}
 
     public function getServiceName()
     {return parent::getServiceName();}
 
-    public function setServiceName($newServiceName, $returnJson = false)
-    {return parent::setServiceName($newServiceName, $returnJson = false);}
-
     public function getServiceDesc()
     {return parent::getServiceDesc();}
 
+    public function getAgencyKey()
+    {return parent::getAgencyKey();}
+
+    /**
+     * Setters
+     */
+
+    public function setAddresses($newAddressJson, $returnJson = false)
+    {return parent::setAddresses($newAddressJson, $returnJson);}
+
+    public function setBusinessName($newBusinessName, $returnJson = false)
+    {return parent::setBusinessName($newBusinessName, $returnJson);}
+
+    public function setBusinessEmail($newBusinessEmail, $returnJson = false)
+    {return parent::setBusinessEmail($newBusinessEmail, $returnJson);}
+
+    public function setServiceName($newServiceName, $returnJson = false)
+    {return parent::setServiceName($newServiceName, $returnJson);}
+
     public function setServiceDesc($newServiceDesc, $returnJson = false)
-    {return parent::setServiceDesc($newServiceDesc, $returnJson = false);}
+    {return parent::setServiceDesc($newServiceDesc, $returnJson);}
 
 }
