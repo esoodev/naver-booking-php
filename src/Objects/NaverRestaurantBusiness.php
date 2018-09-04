@@ -34,8 +34,19 @@ class NaverRestaurantBusiness extends NaverBusiness
         return array_merge_recursive($f, $f_set);
     }
 
+    public static function optionalFields($setDefault = false)
+    {
+        $f = parent::optionalFields($setDefault);
+        return $f;
+    }
+
     public function toJSON()
     {return parent::toJSON();}
+
+    public static function example()
+    {
+        return new self(null, true);
+    }
 
     /**
      * Getters
