@@ -55,7 +55,8 @@ class NaverBusiness
         $f['businessResources'][0]['resourceTypeCode'] =
         NaverDictionary::RESOURCE_TYPE_CODES['대표이미지'];
         $f['businessResources'][0]['order'] = 0;
-        $f['businessResources'][0]['resourceUrl'] = "";
+        $f['businessResources'][0]['resourceUrl'] = "http://c2.poing.co.kr/" .
+            "PIMAGE-original/MjAxNjA5/147513969657ecd8708a574.jpeg";
 
         if (!$setDefault) {
             self::_arraySetValuesNull($f);
@@ -115,31 +116,19 @@ class NaverBusiness
         $this->setData($f);
     }
 
-    public function setAddressJibun(string $newAddressJibun, $returnJson = false)
+    public function setAddressJibun($newAddressJibun)
     {
-        $f['addressJson']['jibun'] = $newAddressJibun;
-        if ($returnJson) {
-            return $f;
-        }
-        $this->setData($f);
+        $this->addressJson['jibun'] = $newAddressJibun;
     }
 
-    public function setAddressRoad(string $newAddressRoad, $returnJson = false)
+    public function setAddressRoad($newAddressRoad)
     {
-        $f['addressJson']['roadAddr'] = $newAddressRoad;
-        if ($returnJson) {
-            return $f;
-        }
-        $this->setData($f);
+        $this->addressJson['roadAddr'] = $newAddressJibun;
     }
 
-    public function setAddressDetail(string $newAddressDetail, $returnJson = false)
+    public function setAddressDetail($newAddressDetail)
     {
-        $f['addressJson']['detail'] = $newAddressDetail;
-        if ($returnJson) {
-            return $f;
-        }
-        $this->setData($f);
+        $this->addressJson['detail'] = $newAddressDetail;
     }
 
     public function getPhones()
@@ -157,34 +146,22 @@ class NaverBusiness
         $this->setData($f);
     }
 
-    public function setPhoneWired(string $newPhoneWired, $returnJson = false)
+    public function setPhoneWired($newPhoneWired)
     {
-        $f['phoneInformationJson']['wiredPhone'] = $newPhoneWired;
-        if ($returnJson) {
-            return $f;
-        }
-        $this->setData($f);
-    }
-    
-    public function setPhoneRep(string $newPhoneRep, $returnJson = false)
-    {
-        $f['phoneInformationJson']['reprPhone'] = $newPhoneRep;
-        if ($returnJson) {
-            return $f;
-        }
-        $this->setData($f);
+        $this->phoneInformationJson['wiredPhone'] = $newPhoneWired;
     }
 
-    public function setPhoneList(array $newPhoneList, $returnJson = false)
+    public function setPhoneRep($newPhoneRep)
     {
-        $f['phoneInformationJson']['phoneList'] = $newPhoneList;
-        if ($returnJson) {
-            return $f;
-        }
-        $this->setData($f);
+        $this->phoneInformationJson['reprPhone'] = $newPhoneRep;
     }
 
-    public function addPhoneList(string $newPhone, $returnJson = false)
+    public function setPhoneList(array $newPhoneList)
+    {
+        $this->phoneInformationJson['phoneList'] = $newPhoneList;
+    }
+
+    public function addPhoneList($newPhone, $returnJson = false)
     {
         array_push($this->phoneInformationJson['phoneList'], $newPhone);
         if ($returnJson) {
@@ -265,7 +242,7 @@ class NaverBusiness
         if ($returnJson) {
             return $f;
         }
-        return $f;
+        $this->setData($f);
     }
 
     public function getAgencyKey()
