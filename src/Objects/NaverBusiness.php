@@ -37,7 +37,7 @@ class NaverBusiness
         $f['reprOwnerName'] = '대표자명'; // 대표자명
 
         $f['addressJson']['jibun'] = '경기도 성남시 분당구 정자동 178-1';
-        $f['addressJson']['roadAddr'] = '경기도 성남시 불정로 6 그린팩토리';
+        // $f['addressJson']['roadAddr'] = '경기도 성남시 불정로 6 그린팩토리';
         $f['addressJson']['posLat'] = 37.359544;
         $f['addressJson']['posLong'] = 127.105473;
 
@@ -67,11 +67,10 @@ class NaverBusiness
 
     public static function optionalFields($setDefault = false)
     {
-        $f['bizNumber'] = '2178139965'; // 사업자 등록번호
-        $f['cbizNumber'] = '2018-서울용산-0189'; // 통신판매업 신고번호
-
-        $f['addressJson']['address'] = '경기도 성남시 분당구 정자동 178-1'; // ?
-        $f['addressJson']['detail'] = '999층'; // 상세 위치
+        $f = [];
+        // $f['bizNumber'] = '2178139965'; // 사업자 등록번호
+        // $f['cbizNumber'] = '2018-서울용산-0189'; // 통신판매업 신고번호
+        // $f['addressJson']['detail'] = '999층'; // 상세 위치
 
         if (!$setDefault) {
             self::_arraySetValuesNull($f);
@@ -258,6 +257,14 @@ class NaverBusiness
             return $f;
         }
         $this->setData($f);
+    }
+
+    public function setMainImage($imgUrl, $returnJson = false)
+    {
+        $f['businessResources'][0]['resourceTypeCode'] =
+        NaverDictionary::RESOURCE_TYPE_CODES['대표이미지'];
+        $f['businessResources'][0]['order'] = 0;
+        $f['businessResources'][0]['resourceUrl'] = $imgUrl;
     }
 
     private static function _arraySetValuesNull(&$arr)
