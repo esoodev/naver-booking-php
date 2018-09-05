@@ -37,7 +37,6 @@ class NaverBusiness
         $f['reprOwnerName'] = '대표자명'; // 대표자명
 
         $f['addressJson']['jibun'] = '경기도 성남시 분당구 정자동 178-1';
-        // $f['addressJson']['roadAddr'] = '경기도 성남시 불정로 6 그린팩토리';
         $f['addressJson']['posLat'] = 37.359544;
         $f['addressJson']['posLong'] = 127.105473;
 
@@ -265,6 +264,8 @@ class NaverBusiness
         NaverDictionary::RESOURCE_TYPE_CODES['대표이미지'];
         $f['businessResources'][0]['order'] = 0;
         $f['businessResources'][0]['resourceUrl'] = $imgUrl;
+
+        $this->setData($f);
     }
 
     private static function _arraySetValuesNull(&$arr)
