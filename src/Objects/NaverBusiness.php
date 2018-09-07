@@ -35,9 +35,9 @@ class NaverBusiness
         $f['agencyKey'] = 'PREFIX_01234';
         $f['name'] = '업체명'; // 업체명
         $f['serviceName'] = '서비스 이름'; // 서비스 이름
-        $f['desc'] = '네이버 예약 PHP 라이브러리를 통한 업체 설명 텍스트입니다.'; // 서비스 소개
-        $f['businessTypeId'] = $this->setBusinessType('식당'); // 서비스 유형
-        $f['businessCategory'] = $this->setBusinessCategory('식당'); // 업종 구분
+        $f['desc'] = '네이버 예약 PHP 라이브러리를 통한 업체 설명 텍스트입니다.';          // 서비스 소개
+        $f['businessTypeId'] = NaverDictionary::BUSINESS_TYPE_ID['식당'];;     // 서비스 유형
+        $f['businessCategory'] = NaverDictionary::BUSINESS_CATEGORIES['식당']; // 업종 구분
         $f['reprOwnerName'] = '대표자명'; // 대표자명
         $f['email'] = 'businessemail@gmail.com'; // 업체 이메일
         $f['addressJson']['jibun'] = '경기도 성남시 분당구 정자동 178-1';
@@ -46,9 +46,9 @@ class NaverBusiness
         $f['phoneInformationJson']['wiredPhone'] = '02-123-4567'; // 업체 연락처(?)
         $f['phoneInformationJson']['reprPhone'] = '02-567-1234'; // "전화번호"
         $f['phoneInformationJson']['phoneList'] = ['02-548-0620']; // 관리자 연락처
-        $f['bookingConfirmCode'] = $this->setBookingConfirm('즉시');
-        $f['bookingTimeUnitCode'] = $this->setBookingTimeUnit('30분');
-        $f['uncompletedBookingProcessCode'] = $this->setIncompleteBookingProcess('취소');
+        $f['bookingConfirmCode'] =  NaverDictionary::BOOKING_CONFIRM_CODES['즉시'];
+        $f['bookingTimeUnitCode'] = NaverDictionary::BOOKING_TIME_UNIT_CODES['30분'];
+        $f['uncompletedBookingProcessCode'] = NaverDictionary::UNCOMPLETED_BOOKING_PROCESS_CODES['취소'];
         $f['businessResources'][0]['resourceTypeCode'] =
         NaverDictionary::RESOURCE_TYPE_CODES['대표이미지'];
         $f['businessResources'][0]['order'] = 0;
