@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . "/NaverDictionary.php";
+require_once dirname(__FILE__) . "/../Helpers/ArrayHelper.php";
 
 class NaverBusiness
 {
@@ -55,7 +56,7 @@ class NaverBusiness
         $f['businessResources'][0]['resourceUrl'] = '';
 
         if (!$setDefault) {
-            self::_arraySetValuesNull($f);
+            ArrayHelper::setValuesNullRecursive($f);
         }
 
         return $f;
@@ -68,7 +69,7 @@ class NaverBusiness
         $f['addressJson']['detail'] = '999층'; // 상세 위치
 
         if (!$setDefault) {
-            self::_arraySetValuesNull($f);
+            ArrayHelper::setValuesNullRecursive($f);
         }
 
         return $f;
@@ -200,9 +201,9 @@ class NaverBusiness
         $this->desc = $desc;
     }
 
-    public function setAgencyKey($agenctKey)
+    public function setAgencyKey($agencyKey)
     {
-        $this->agenctKey = $agenctKey;
+        $this->agencyKey = $agencyKey;
     }
 
     public function setMainImage($imgUrl)
