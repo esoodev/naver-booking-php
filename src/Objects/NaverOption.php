@@ -4,7 +4,7 @@ require_once dirname(__FILE__) . "/NaverDictionary.php";
 require_once dirname(__FILE__) . "/../Helpers/ArrayHelper.php";
 
 /**
- * NaverOption 는 API 문서상 NaverOption 과 동의.
+ * NaverOption 는 API 문서상 NaverOption 과 동일.
  */
 class NaverOption
 {
@@ -26,6 +26,11 @@ class NaverOption
     public static function example()
     {
         return new self(null, true);
+    }
+
+    public static function exampleRequiredOnly()
+    {
+        return new self(self::requiredFields(true));
     }
 
     public static function requiredFields($setDefault = false)
@@ -51,7 +56,7 @@ class NaverOption
 
     public static function optionalFields($setDefault = false)
     {
-        $f['normalPrice'] = '20000'; // 정상가
+        $f['normalPrice'] = 20000; // 정상가
         $f['order'] = 0; // 노출 순서
         $f['desc'] = '네이버 예약 PHP 라이브러리를 통한 메뉴 설명 텍스트입니다.'; // 메뉴 설명
         $f['priceDesc'] = '초특가! 테스트 환경에서만 제공하는 반값 이벤트!'; // 가격 설명
@@ -65,71 +70,159 @@ class NaverOption
         return $f;
     }
 
-    public function toJSON()
-    {
-        return json_encode(array_merge_recursive($this->requiredFields,
-            $this->optionalFields), JSON_UNESCAPED_UNICODE);
-    }
+    /**
+     * MISC
+     */
 
-    public function setData(array $data)
+    public function addStock($count)
     {
-        foreach ($data as $key => $value) {
-            $this->{$key} = $value;
+        $currStock = $this->stock;
+        $finalStock = $currStock + $count;
+        if ($finalStock < 0) {
+            throw new InvalidArgumentException("Cannot add ${count} to stock count " .
+                "${currStock}. The result is less than zero.");
         }
+        $this->stock = $final;
+        return $this->stock;
     }
 
-    public function getName()
-    {
-        $f['name'] = $this->name;
-        return $f;
-    }
+    /**
+     * GETTERS
+     */
 
-    public function setName($newName, $returnJson = false)
+    public function getAgencyKey()
     {
-        $f['name'] = $newName;
-        if ($returnJson) {
-            return $f;
-        }
-        $this->setData($f);
+        return $this->agencyKey;
     }
 
     public function getCategoryId()
     {
-        $f['categoryId'] = $this->categoryId;
-        return $f;
+        return $this->categoryId;
     }
 
-    public function setCategoryId(int $newCategoryId, $returnJson = false)
+    public function getName()
     {
-        $f['categoryId'] = $newCategoryId;
-        if ($returnJson) {
-            return $f;
-        }
-        $this->setData($f);
+        return $this->name;
     }
 
-    public function getDesc()
+    public function getStock()
     {
-        $f['desc'] = $this->desc;
-        return $f;
+        return $this->stock;
     }
 
-    public function setDesc($newDesc, $returnJson = false)
+    public function getPrice()
     {
-        $f['desc'] = $newDesc;
-        if ($returnJson) {
-            return $f;
-        }
-        $this->setData($f);
+        return $this->price;
+    }
+
+    public function getPriceOriginal()
+    {
+        return $this->normalPrice;
+    }
+
+    public function getMinBookingCount()
+    {
+        return $this->minBookingCount;
+    }
+
+    public function getMaxBookingCount()
+    {
+        return $this->maxBookingCount;
     }
 
     public function getImages()
     {
-        $f['optionResources'] = $this->optionResources;
-        return $f;
+        return $this->optionResources;
     }
 
-    public function setMainImage($imageUrl, $returnJson = false)
+    public function getDesc()
+    {
+        return $this->desc;
+    }
+
+    public function getPriceDesc()
+    {
+        return $this->priceDesc;
+    }
+
+    
+    /**
+     * NOT
+     */
+    // public function getStartDate()
+    // {
+    //     return $this->startDate;
+    // }
+    // public function getEndDate()
+    // {
+    //     return $this->endDate;
+    // }
+
+    /**
+     * SETTERS
+     */
+
+    public function setAgencyKey($agencyKey)
+    {
+        $this->agencyKey = $agencyKey;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function setCategoryId($categoryId)
+    {
+        $this->categoryId = $categoryId;
+    }
+
+    public function setDesc($desc)
+    {
+        $this->desc = $desc;
+    }
+
+    public function setPriceDesc($priceDesc)
+    {
+        $this->priceDesc = $priceDesc;
+    }
+
+    public function setStock($stock)
+    {
+        $this->stock = $stock;
+    }
+
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    public function setPriceOriginal($price)
+    {
+        $this->normalPrice = $price;
+    }
+
+    public function setStartDate($startDate)
+    {
+        $this->startDate = $startDate;
+    }
+    
+    public function setEndDate($endDate)
+    {
+        $this->endDate = $endDate;
+    }
+
+    public function setMinBookingCount($minBookingCount)
+    {
+        $this->minBookingCount = $minBookingCount;
+    }
+
+    public function setMaxBookingCount($maxBookingCount)
+    {
+        $this->maxBookingCount = $maxBookingCount;
+    }
+
+    public function setMainImage($imageUrl)
     {
         $f['optionResources'][0]['resourceTypeCode'] =
         NaverDictionary::RESOURCE_TYPE_CODES['대표이미지'];
@@ -138,6 +231,13 @@ class NaverOption
             return $f;
         }
         $this->setData($f);
+    }
+
+    public function setData(array $data)
+    {
+        foreach ($data as $key => $value) {
+            $this->{$key} = $value;
+        }
     }
 
 }

@@ -43,9 +43,9 @@ class NaverProduct
         NaverDictionary::RESOURCE_TYPE_CODES['대표이미지']; // 상품 리소스 list
         $f['businessResources'][0]['resourceUrl'] = "";
 
-        // 추후 비필요 사항으로 검토
-        $f['bookingCountSettingJson']['minBookingCount'] = 1;
-        $f['bookingCountSettingJson']['maxBookingCount'] = 10;
+        // 비필요 사항
+        // $f['bookingCountSettingJson']['minBookingCount'] = 1;
+        // $f['bookingCountSettingJson']['maxBookingCount'] = 10;
 
         if (!$setDefault) {
             ArrayHelper::setValuesNullRecursive($f);
@@ -60,6 +60,8 @@ class NaverProduct
         $f['bookingPrecation'] = '상품예약 주의사항입니다.'; // 상품예약 주의사항
         $f['phone'] = '010-123-1234'; // 상품 전화번호
         $f['isImpStock'] = true; // 재고 수량 노출 여부
+        $f['startDate'] = '2018-11-09'; // 예약 시작일
+        $f['endDate'] = '2018-11-21'; // 예약 종료일
         $f['bookingGuideJson']['words'] = '예약 가이드'; // 예약 가이드
         $f['bookingCancelGuideJson']['words'] = '예약 취소 가이드'; // 예약 취소 가이드
         $f['bookableSettingJson']['isUseOpen'] = false; // 예약 오픈 시간 사용 여부
@@ -114,20 +116,31 @@ class NaverProduct
         return $this->bookingCancelGuideJson['words'];
     }
 
+    public function getStartDateString()
+    {
+        return $this->startDate;
+    }
+
     public function getStartDate()
     {
         return DateTime::createFromFormat(DateTime::W3C,
-            $this->bookableSettingJson['openDateTime']);
+            $this->bookableSettingJson['openDateTime'],
+            new DateTimeZone('Asia/Seoul'));
+    }
+
+    public function getEndDateString()
+    {
+        return $this->endDate;
     }
 
     public function getEndDate()
     {
-        $openDate = $this->getStartDate();
-        $days = $this->bookableSettingJson['closeDays'] !== 0 ?
+        $startDate = $this->getStartDate();
+        $days = empty($this->bookableSettingJson['closeDays']) ?
         $this->bookableSettingJson['closeDays'] . 'D' : '';
-        $hours = $this->bookableSettingJson['closeHours'] !== 0 ?
+        $hours = empty($this->bookableSettingJson['closeHours']) ?
         $this->bookableSettingJson['closeHours'] . 'H' : '';
-        return $openDate->add(new DateInterval("P${days}${hours}"));
+        return $startDate->add(new DateInterval("P${days}${hours}"));
     }
 
     /**
@@ -169,29 +182,28 @@ class NaverProduct
         $this->bookingCancelGuideJson['words'] = $words;
     }
 
-    public function setStartDate($startDateString, $format = 'Y-m-d H:i:s')
+    /**
+     * 오픈 및 종료 시간 설정
+     */
+
+    public function setStartDateTime($dateString, $format = 'Y-m-d H:i:s')
     {
-        $this->bookableSettingJson['isUseClose'] = true; // 예약 오픈 시간 사용 여부
+        $this->bookableSettingJson['isUseOpen'] = true; // 예약 오픈 시간 사용 여부
         $this->bookableSettingJson['openDateTime'] =
-        DateTime::createFromFormat($format, $startDateString,
+        DateTime::createFromFormat($format, $dateString,
             new DateTimeZone('Asia/Seoul'))->format(DateTime::W3C);
     }
 
-    public function unsetStartDate()
+    private function setEndDateTime($dateString, $format = 'Y-m-d H:i:s')
     {
-        $this->bookableSettingJson['isUseOpen'] = false;
-    }
-
-    public function setEndDate($endDateString, $format = 'Y-m-d H:i:s')
-    {
-        $endDate = DateTime::createFromFormat($format, $endDateString);
+        $endDate = DateTime::createFromFormat($format, $dateString);
         $startDate = $this->getStartDate();
         $diff = $startDate->diff($endDate, true);
         $this->addEndDays($diff->d);
         $this->addEndHours($diff->h);
     }
 
-    public function addEndDays($nDays)
+    private function addEndDays($nDays)
     {
         $this->bookableSettingJson['isUseClose'] = true;
         $closeDays = &$this->bookableSettingJson['closeDays'];
@@ -202,7 +214,7 @@ class NaverProduct
         }
     }
 
-    public function addEndHours($nHours)
+    private function addEndHours($nHours)
     {
         $this->bookableSettingJson['isUseClose'] = true;
         $closeHours = &$this->bookableSettingJson['closeHours'];
@@ -211,10 +223,9 @@ class NaverProduct
         } else {
             $closeHours = $nHours;
         }
-
     }
 
-    public function unsetEndDaysHours()
+    private function unsetEndDateTime()
     {
         $this->bookableSettingJson['isUseClose'] = false;
         $this->bookableSettingJson['closeDays'] = 0;
@@ -236,6 +247,22 @@ class NaverProduct
         foreach ($data as $key => $value) {
             $this->{$key} = $value;
         }
+    }
+
+    /**
+     * UNUSED / UNSURE
+     */
+
+    public function setStartDate($dateString, $format = 'Y-m-d H:i:s')
+    {
+        $this->startDate = DateTime::createFromFormat($format, $dateString,
+            new DateTimeZone('Asia/Seoul'))->format('Y-m-d');
+    }
+
+    public function setEndDate($dateString, $format = 'Y-m-d H:i:s')
+    {
+        $this->endDate = DateTime::createFromFormat($format, $dateString,
+            new DateTimeZone('Asia/Seoul'))->format('Y-m-d');
     }
 
 }
