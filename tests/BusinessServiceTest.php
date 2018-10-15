@@ -123,7 +123,7 @@ final class BusinessServiceTest extends TestCase
                 $business->setBusinessName('아웃백 스테이크 하아 힘들다!', true),
                 $business->setBusinessEmail('123@naver.com', true)
             );
-            $res = $service->editBusinessById(16363, $data);
+            $res = $service->editBusiness(16363, $data);
 
             self::_outputFile('edit-business-res.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));

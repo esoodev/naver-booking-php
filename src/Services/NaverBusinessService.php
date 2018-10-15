@@ -47,7 +47,7 @@ class NaverBusinessService extends NaverServiceBase
         return json_decode($res);
     }
 
-    public function editBusinessById($businessId, array $data)
+    public function editBusiness($businessId, array $data)
     {
         $data['businessId'] = $businessId;
         $res = $this->requestHandler->patch(

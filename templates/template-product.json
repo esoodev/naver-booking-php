@@ -15,8 +15,8 @@
     "isSmsReceived": false,
     "customFormJson": [],
     "isAgencyKeyUsed": true,
-    "maxBookingCount": 1,
-    "minBookingCount": 1,
+    "maxBookingCount": 0,
+    "minBookingCount": 0,
     "bookingGuideJson": [],
     "nPayRegStatusCode": "PA00",
     "isArsNightReceived": false,
@@ -30,7 +30,10 @@
     "bookingAvailableValue": 0,
     "translationStatusJson": {},
     "bookingCancelGuideJson": [],
-    "bookingCountSettingJson": {},
+    "bookingCountSettingJson": {
+        "maxBookingCount": 0,
+        "minBookingCount": 0
+    },
     "isCommissionTermsAgreed": false,
     "bookingAvailableEndValue": 30,
     "bookingAvailableStartValue": 0,

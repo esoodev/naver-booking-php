@@ -6,14 +6,14 @@ require_once dirname(__FILE__) . "/../Objects/NaverOption.php";
 class NaverOptionService extends NaverServiceBase
 {
 
-    public function getOptions(int $businessId)
+    public function getOptions($businessId)
     {
         $res = $this->requestHandler->get(
             $this->hostUri . "/v3.1/businesses/${businessId}/options");
         return json_decode($res, true);
     }
 
-    public function getOption(int $businessId, int $optionId)
+    public function getOption($businessId, $optionId)
     {
         $res = $this->requestHandler->get(
             $this->hostUri . "/v3.1/businesses/${businessId}/" .
@@ -21,7 +21,7 @@ class NaverOptionService extends NaverServiceBase
         return json_decode($res, true);
     }
 
-    public function getOptionCategories(int $businessId)
+    public function getOptionCategories($businessId)
     {
         $res = $this->requestHandler->get(
             $this->hostUri . "/v3.1/businesses/${businessId}/" .
@@ -29,7 +29,7 @@ class NaverOptionService extends NaverServiceBase
         return json_decode($res, true);
     }
 
-    public function getOptionCategoryIdByName(int $businessId, $categoryName)
+    public function getOptionCategoryIdByName($businessId, $categoryName)
     {
         $categories = $this->getOptionCategories($businessId);
         $categoryId = ArrayHelper::mapForKey('name', $categoryName, 'categoryId',
@@ -37,7 +37,7 @@ class NaverOptionService extends NaverServiceBase
         return $categoryId;
     }
 
-    public function getDefaultOptionCategoryId(int $businessId)
+    public function getDefaultOptionCategoryId($businessId)
     {
         return $this->getOptionCategoryIdByName($businessId, '카테고리 미지정');
     }
@@ -47,7 +47,7 @@ class NaverOptionService extends NaverServiceBase
      * getOptionCategoryIdByName($businessId, '카테고리 미지정') 통해 categoryId 받은 후
      * NaverOption 에 setCategoryId(categoryid) 해야함.
      */
-    public function createOption(int $businessId, NaverOption $option)
+    public function createOption($businessId, NaverOption $option)
     {
         $res = $this->requestHandler->post(
             $this->hostUri . "/v3.1/businesses/${businessId}/options",
@@ -55,7 +55,7 @@ class NaverOptionService extends NaverServiceBase
         return json_decode($res);
     }
 
-    public function editOption(int $businessId, int $optionId,
+    public function editOption($businessId, $optionId,
         array $data) {
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}" .
@@ -64,7 +64,7 @@ class NaverOptionService extends NaverServiceBase
         return $res;
     }
 
-    public function deleteOption(int $businessId, int $optionId)
+    public function deleteOption($businessId, $optionId)
     {
         $res = $this->requestHandler->delete(
             $this->hostUri . "/v3.1/businesses/${businessId}/" .
@@ -76,7 +76,7 @@ class NaverOptionService extends NaverServiceBase
         }
     }
 
-    public function deleteAllOptions(int $businessId)
+    public function deleteAllOptions($businessId)
     {
         $optionIds = ArrayHelper::extract('optionId',
             $this->getOptions($businessId));

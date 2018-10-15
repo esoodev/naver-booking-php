@@ -6,14 +6,14 @@ require_once dirname(__FILE__) . "/../Objects/NaverProduct.php";
 class NaverProductService extends NaverServiceBase
 {
 
-    public function getProducts(int $businessId)
+    public function getProducts($businessId)
     {
         $res = $this->requestHandler->get(
             $this->hostUri . "/v3.1/businesses/${businessId}/biz-items");
         return json_decode($res, true);
     }
 
-    public function getProduct(int $businessId, int $productId)
+    public function getProduct($businessId, $productId)
     {
         $res = $this->requestHandler->get(
             $this->hostUri . "/v3.1/businesses/${businessId}/" .
@@ -21,11 +21,20 @@ class NaverProductService extends NaverServiceBase
         return json_decode($res, true);
     }
 
-    public function createProduct(int $businessId, Product $product)
+    public function createProduct($businessId, NaverProduct $product)
     {
         $res = $this->requestHandler->post(
             $this->hostUri . "/v3.1/businesses/${businessId}/biz-items",
             json_encode($product));
         return json_decode($res);
+    }
+
+    public function editProduct($businessId, $productId, array $data)
+    {
+        $res = $this->requestHandler->patch(
+            $this->hostUri . "/v3.1/businesses/${businessId}/" .
+            "biz-items/${productId}",
+            json_encode($data));
+        return $res;
     }
 }

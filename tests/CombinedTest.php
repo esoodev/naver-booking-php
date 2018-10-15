@@ -34,7 +34,7 @@ final class CombinedTest extends TestCase
             self::_outputFile('edit-address-search-addr.json',
                 json_encode($address, JSON_UNESCAPED_UNICODE));
 
-            $res = $bs->editBusinessById($business->getBusinessId(), $body);
+            $res = $bs->editBusiness($business->getBusinessId(), $body);
 
             self::_outputFile('edit-address-search-res.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
