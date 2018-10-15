@@ -50,4 +50,18 @@ class NaverDictionary
         '대표이미지' => 'FL00',
         '서브이미지' => 'FL01',
     ];
+
+    // 예약 리스트 조회
+    const BOOKING_STATUS_CODES = [
+        'REQUESTED' => 'RC02',
+        'CONFIRMED' => 'RC03',
+        'CANCELLED' => 'RC04',
+        'COMPLETED' => 'RC05',
+    ];
+
+    // 예약 상태 - from 대행사 to 네이버
+    const BOOKING_STATUS_STRINGS = [
+        'CONFIRMED', 'CANCELLED', 'COMPLETED',
+        'READABLE_CODE_COMPLETED', 'PARTIAL_CHANGED',
+    ];
 }

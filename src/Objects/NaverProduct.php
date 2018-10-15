@@ -43,10 +43,6 @@ class NaverProduct
         NaverDictionary::RESOURCE_TYPE_CODES['대표이미지']; // 상품 리소스 list
         $f['businessResources'][0]['resourceUrl'] = "";
 
-        // 비필요 사항
-        // $f['bookingCountSettingJson']['minBookingCount'] = 1;
-        // $f['bookingCountSettingJson']['maxBookingCount'] = 10;
-
         if (!$setDefault) {
             ArrayHelper::setValuesNullRecursive($f);
         }
