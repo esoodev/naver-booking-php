@@ -1,6 +1,7 @@
 <?php
 
 require_once dirname(__FILE__) . "/NaverDictionary.php";
+require_once dirname(__FILE__) . "/NaverReservation.php";
 require_once dirname(__FILE__) . "/../Helpers/ArrayHelper.php";
 
 /**
@@ -16,14 +17,41 @@ class NaverReservationStatusFrom
         }
     }
 
-    /**
-     * GETTERS
-     */
+    public static function create(array $data)
+    {
+        return new self($data);
+    }
 
     public function getStatus()
     {
         // paid, payCompleted, confirmed, cancelled, completed
         return $this->status;
+    }
+
+    public function getBookingId()
+    {
+        return $this->getReservation()->getReservationId();
+    }
+
+    public function getDateTime($format = 'Y-m-d H:i:s')
+    {
+        return (new DateTime($this->dateTime))->format($format);
+    }
+
+    /**
+     * eg) 2018-10-16
+     */
+    public function getDateString($format = 'Y-m-d')
+    {
+        return (new DateTime($this->dateTime))->format($format);
+    }
+
+    /**
+     * eg) 07:20
+     */
+    public function getTimeString($format = 'H:i')
+    {
+        return (new DateTime($this->dateTime))->format($format);
     }
 
     public function getReservationDetails()
@@ -36,6 +64,21 @@ class NaverReservationStatusFrom
         return $this->cancelledDesc;
     }
 
+    public function getCancelBy()
+    {
+        return $this->cancelledDesc;
+    }
+
+    public function isCancelByUser()
+    {
+        return ($this->getCancelBy() === 'USER');
+    }
+
+    public function isCancelByBusinessOwner()
+    {
+        return ($this->getCancelBy() === 'OWNER');
+    }
+
     public function getRefundPrice()
     {
         return $this->refundPrice;
@@ -45,4 +88,11 @@ class NaverReservationStatusFrom
     {
         return $this->refundRate;
     }
+
+    public function getReservation()
+    {
+        return NaverReservation::create(
+            json_decode($this->bookingDetails));
+    }
+
 }

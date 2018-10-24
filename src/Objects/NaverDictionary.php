@@ -60,8 +60,20 @@ class NaverDictionary
     ];
 
     // 예약 상태 - from 대행사 to 네이버
-    const BOOKING_STATUS_STRINGS = [
+    const BOOKING_STATUS_STRINGS_TO = [
         'CONFIRMED', 'CANCELLED', 'COMPLETED',
         'READABLE_CODE_COMPLETED', 'PARTIAL_CHANGED',
+    ];
+
+    // 예약 취소 소스
+    const BOOKING_CANCEL_SOURCES = [
+        'USER', 'OWNER',
+    ];
+
+    const REFUND_TYPES = [
+        'STANDARD' => '업체의 환불 정책에 맞게 환불',
+        'RATE' => '환불 요율을 강제해서 환불',
+        'PRICE' => '환불 가격을 강제해서 환불',
+        'ALL' => '전액 환불',
     ];
 }
