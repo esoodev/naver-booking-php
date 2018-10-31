@@ -245,6 +245,11 @@ class NaverProduct
         }
     }
 
+    public function setIsNpayUsed($bool = true)
+    {
+        $this->isNpayUsed = $bool;
+    }
+
     /**
      * UNUSED / UNSURE
      */

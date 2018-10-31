@@ -86,6 +86,13 @@ class NaverReservation
         return $this->details;
     }
 
+    public function getReservationRequestMessage()
+    {
+        if (isset($this->details['requestMessage'])) {
+            return $this->details['requestMessage'];}
+        return '';
+    }
+
     public function getTotalPrice()
     {
         return $this->details['price'];

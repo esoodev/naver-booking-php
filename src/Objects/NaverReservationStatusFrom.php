@@ -28,11 +28,6 @@ class NaverReservationStatusFrom
         return $this->status;
     }
 
-    public function getBookingId()
-    {
-        return $this->getReservation()->getReservationId();
-    }
-
     public function getDateTime($format = 'Y-m-d H:i:s')
     {
         return (new DateTime($this->dateTime))->format($format);
@@ -61,12 +56,24 @@ class NaverReservationStatusFrom
 
     public function getCancelDesc()
     {
-        return $this->cancelledDesc;
+        if ($this->getStatus() == 'cancelled') {
+            if (empty($this->cancelledDesc)) {
+                return '';}
+            return $this->cancelledDesc;
+        }
+        return null;
+
     }
 
     public function getCancelBy()
     {
-        return $this->cancelledDesc;
+        if ($this->getStatus() == 'cancelled') {
+            if (empty($this->cancelledBy)) {
+                return null;}
+            return $this->cancelledBy;
+        }
+        return null;
+
     }
 
     public function isCancelByUser()
@@ -81,18 +88,26 @@ class NaverReservationStatusFrom
 
     public function getRefundPrice()
     {
-        return $this->refundPrice;
+        if ($this->getStatus() == 'cancelled') {
+            if (empty($this->refundPrice)) {
+                return 0;}
+            return intval($this->refundPrice);
+        }
+        return null;
     }
 
     public function getRefundRate()
     {
-        return $this->refundRate;
+        if ($this->getStatus() == 'cancelled') {
+            if (empty($this->refundRate)) {
+                return 0;}
+            return intval($this->refundRate);
+        }
+        return null;
     }
 
     public function getReservation()
     {
-        return NaverReservation::create(
-            json_decode($this->bookingDetails));
+        return NaverReservation::create($this->bookingDetails);
     }
-
 }

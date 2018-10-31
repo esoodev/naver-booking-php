@@ -26,7 +26,6 @@ class NaverProductService extends NaverServiceBase
         $res = $this->requestHandler->post(
             $this->hostUri . "/v3.1/businesses/${businessId}/biz-items",
             json_encode($product));
-        var_dump(json_encode($product));
         return json_decode($res);
     }
 
