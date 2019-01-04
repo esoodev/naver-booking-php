@@ -1,7 +1,7 @@
 <?php
 namespace NaverBooking\Objects;
 
-class ProductDesc
+class ExtraDesc
 {
 
     public function __construct($title = '', $context = '')
