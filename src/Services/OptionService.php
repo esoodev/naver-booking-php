@@ -1,6 +1,7 @@
 <?php
 namespace NaverBooking\Services;
 
+use NaverBooking\Helpers\ArrayHelper;
 use NaverBooking\Objects\Option;
 
 require_once dirname(__FILE__) . "/ServiceBase.php";
