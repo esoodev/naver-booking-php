@@ -29,9 +29,7 @@
     },
     "autoload": {
         "psr-4": {
-            "NaverBooking\\": "src/",
-            "NaverBooking\\Services\\": "src/services/",
-            "NaverBooking\\Objects\\": "src/objects/"
+            "NaverBooking\\": "src/"
         }
     },
     "autoload-dev": {},
