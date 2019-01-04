@@ -1,0 +1,41 @@
+{
+    "bookingId": "80331",
+    "status": "confirmed",
+    "userId": "3021",
+    "name": "위성우",
+    "phone": "01055101659",
+    "email": "wsw628@naver.com",
+    "date": "2018-10-16",
+    "startDate": "2018-10-16",
+    "endDate": "2018-10-16",
+    "minute": 720,
+    "details": {
+        "isNPayUsed": true,
+        "count": 1,
+        "price": 130000,
+        "bizItemPrice": 0,
+        "shippingStatus": "NONE",
+        "extraFee": {},
+        "prices": [
+            {
+                "priceId": "44613",
+                "name": "default",
+                "desc": "시스템 기본가격",
+                "price": 0,
+                "bookingCount": 1
+            }
+        ],
+        "options": [
+            {
+                "optionId": "POI_rTngdEWa",
+                "price": 130000,
+                "bookingCount": 1
+            }
+        ],
+        "customFormInputs": [],
+        "seats": [],
+        "addressJson": {},
+        "refundPolicy": [],
+        "refundTimeOffset": 0
+    }
+}
