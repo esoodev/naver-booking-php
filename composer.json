@@ -31,7 +31,7 @@
         "psr-4": {
             "NaverBooking\\": "src/",
             "NaverBooking\\Services\\": "src/services/",
-            "NaverBooking\\Objects\\": "src/objects/",
+            "NaverBooking\\Objects\\": "src/objects/"
         }
     },
     "autoload-dev": {},
