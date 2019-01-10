@@ -31,7 +31,7 @@ class ProductService extends ServiceBase
         return json_decode($res);
     }
 
-    public function editProduct($businessId, $productId, array $data)
+    public function editProduct($businessId, $productId, Product $data)
     {
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}/" .
