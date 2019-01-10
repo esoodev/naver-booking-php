@@ -4,9 +4,14 @@
  */
 
 declare (strict_types = 1);
+
 use NaverBooking\Objects\Business;
 use NaverBooking\Services\BusinessService;
 use PHPUnit\Framework\TestCase;
+
+require_once dirname(__FILE__) . "/../src/Services/BusinessService.php";
+require_once dirname(__FILE__) . "/../src/Handlers/RequestHandler.php";
+require_once dirname(__FILE__) . "/../src/Config/NaverBookingConfig.php";
 
 final class BusinessServiceTest extends TestCase
 {
@@ -22,13 +27,16 @@ final class BusinessServiceTest extends TestCase
         '1b212638e653d4570087a32631d518588a45a30259d174bec' .
         'c0583dee7f5aca17515d58d15911e416';
 
-    const TEST_GET_BUSINESSES = 1;
-    const TEST_GET_BUSINESS = 1;
-    const TEST_GET_BUSINESSIDS_BY_NAME = 1;
-    const TEST_GET_BUSINESSES_BY_NAME = 1;
-    const TEST_CREATE_BUSINESS = 1;
-    const TEST_EDIT_BUSINESS = 1;
-    const TEST_EDIT_BUSINESS_ADDR_BY_ID = 1;
+    const TEST_GET_BUSINESSES = 0;
+    const TEST_GET_BUSINESS = 0;
+    const TEST_GET_BUSINESSIDS_BY_NAME = 0;
+    const TEST_GET_BUSINESSES_BY_NAME = 0;
+    const TEST_CREATE_BUSINESS = 0;
+    const TEST_EDIT_BUSINESS = 0;
+    const TEST_EDIT_BUSINESS_ADDR_BY_ID = 0;
+    const TEST_MAP_BUSINESS = 1;
+    const TEST_UNMAP_BUSINESS = 0;
+
 
     public function testCanGetBusinesses(): void
     {
@@ -152,6 +160,38 @@ final class BusinessServiceTest extends TestCase
             var_dump($res);
         } else {
             echo ("\nSkipping testCanEditBusiness()");
+        }
+    }
+
+    public function testCanMapBusiness(): void
+    {
+        if (self::TEST_MAP_BUSINESS) {
+            $service = new BusinessService(self::ACCESS_TOKEN);
+            $businessId = 17199;
+            $agencyKey = 'POI_dnFUoGbc';
+            $res = $service->mapBusiness('trustus', $businessId, $agencyKey);
+            self::_outputFile('map-business.json',
+                json_encode($res, JSON_UNESCAPED_UNICODE));
+
+            $this->expectOutputString('');
+            var_dump($res);
+        } else {
+            echo ("\nSkipping testCanMapBusiness()");
+        }
+    }
+
+    public function testCanUnmapBusiness(): void
+    {
+        if (self::TEST_UNMAP_BUSINESS) {
+            $service = new BusinessService(self::ACCESS_TOKEN);
+            $res = $service->unmapBusiness('trustus', $businessId, $agencyKey);
+            self::_outputFile('unmap-businesses.json',
+                json_encode($res, JSON_UNESCAPED_UNICODE));
+
+            $this->expectOutputString('');
+            var_dump($res);
+        } else {
+            echo ("\nSkipping testCanUnmapBusiness()");
         }
     }
 

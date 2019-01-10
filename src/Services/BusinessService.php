@@ -60,7 +60,15 @@ class BusinessService extends ServiceBase
         return $res;
     }
 
-    public function mapBusiness($businessId, $naverUserId, $agencyKey)
+    /**
+     * 업체 매핑시 기존에 등록되어있는 업체의 상품들은 모두 미노출 처리 됩니다. 
+     * 미노출된 상품들은 상품 수정을통해 대행사의 상품ID를 입력후 노출 처리 하시면 됩니다.
+     * 
+     * naverId : 매핑 변경 하려는 네이버 서비스를 생성한 네이버 아이디.
+     * businessId : 매핑 변경 하려는 네이버 서비스 ID.
+     * agencyKey : 대행사에서 사용하는 업체 ID.
+     */
+    public function mapBusiness($naverUserId, $businessId, $agencyKey)
     {
         // true 면 대행권 획득, false 면 대행권 해지 요청.
         $curl_fail_on_error = true;
@@ -74,13 +82,13 @@ class BusinessService extends ServiceBase
         return $res;
     }
 
-    public function unmapBusiness($businessId, $naverId, $agencyKey)
+    public function unmapBusiness($naverUserId, $businessId, $agencyKey)
     {
         // true 면 대행권 획득, false 면 대행권 해지 요청.
         $data['isAgencyConnected'] = false;
         $data['isAgencyKeyUsed'] = true;
         $data['agencyKey'] = $agencyKey;
-        $data['naverId'] = $naverId;
+        $data['naverId'] = $naverUserId;
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}/agency-mappings",
             json_encode($data));
