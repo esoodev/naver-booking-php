@@ -65,16 +65,12 @@ class RequestHandler
 
         if ($is_fail_on_error) {$this->_setFailOnError($ch);}
 
-        curl_setopt($ch, CURLOPT_FAILONERROR, true);
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->header_post);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 
-        // throw curl error message
-        if (curl_error($ch)) {throw new Exception(curl_error($ch));}
-        
         $res = curl_exec($ch);
         curl_close($ch);
 

@@ -34,8 +34,8 @@ final class BusinessServiceTest extends TestCase
     const TEST_CREATE_BUSINESS = 0;
     const TEST_EDIT_BUSINESS = 0;
     const TEST_EDIT_BUSINESS_ADDR_BY_ID = 0;
-    const TEST_MAP_BUSINESS = 1;
-    const TEST_UNMAP_BUSINESS = 0;
+    const TEST_MAP_BUSINESS = 0;
+    const TEST_UNMAP_BUSINESS = 1;
 
 
     public function testCanGetBusinesses(): void
@@ -167,9 +167,9 @@ final class BusinessServiceTest extends TestCase
     {
         if (self::TEST_MAP_BUSINESS) {
             $service = new BusinessService(self::ACCESS_TOKEN);
-            $businessId = 17199;
+            $businessId = 19695;
             $agencyKey = 'POI_dnFUoGbc';
-            $res = $service->mapBusiness('trustus', $businessId, $agencyKey);
+            $res = $service->mapBusiness('yata62', $businessId, $agencyKey);
             self::_outputFile('map-business.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
 
@@ -184,7 +184,9 @@ final class BusinessServiceTest extends TestCase
     {
         if (self::TEST_UNMAP_BUSINESS) {
             $service = new BusinessService(self::ACCESS_TOKEN);
-            $res = $service->unmapBusiness('trustus', $businessId, $agencyKey);
+            $businessId = 19695;
+            $agencyKey = 'POI_dnFUoGbd';
+            $res = $service->unmapBusiness('yata62', $businessId, $agencyKey);
             self::_outputFile('unmap-businesses.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
 
