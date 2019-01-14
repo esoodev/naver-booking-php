@@ -42,7 +42,7 @@ final class BusinessServiceTest extends TestCase
     {
         if (self::TEST_GET_BUSINESSES) {
             $service = new BusinessService(self::ACCESS_TOKEN);
-            $res = $service->getBusinesses('trustusdev');
+            $res = $service->getBusinesses('yata62', 10);
             self::_outputFile('get-businesses.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
 
@@ -186,12 +186,16 @@ final class BusinessServiceTest extends TestCase
             $service = new BusinessService(self::ACCESS_TOKEN);
             $businessId = 19695;
             $agencyKey = 'POI_dnFUoGbd';
-            $res = $service->unmapBusiness('yata62', $businessId, $agencyKey);
-            self::_outputFile('unmap-businesses.json',
-                json_encode($res, JSON_UNESCAPED_UNICODE));
-
-            $this->expectOutputString('');
-            var_dump($res);
+            try{
+                $res = $service->unmapBusiness('yata62', $businessId, $agencyKey);
+                self::_outputFile('unmap-businesses.json',
+                    json_encode($res, JSON_UNESCAPED_UNICODE));
+    
+                $this->expectOutputString('');
+                var_dump($res);
+            } catch(\Exception $e) {
+                var_dump($e->getMessage());
+            }
         } else {
             echo ("\nSkipping testCanUnmapBusiness()");
         }

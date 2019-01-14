@@ -9,10 +9,11 @@ require_once dirname(__FILE__) . "/ServiceBase.php";
 
 class BusinessService extends ServiceBase
 {
-    public function getBusinesses($accountName)
+    public function getBusinesses($accountName, $size, $page)
     {
         $res = $this->requestHandler->get(
-            $this->hostUri . "/v3.0/businesses?account=${accountName}");
+            $this->hostUri . "/v3.0/businesses?account=${accountName}&" .
+            "page=${page}&size=${size}");
         return json_decode($res, true);
     }
 
@@ -119,8 +120,9 @@ class BusinessService extends ServiceBase
 
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}",
-            json_encode($data));
+            json_encode($data), true);
         return $res;
     }
+    
 
 }
