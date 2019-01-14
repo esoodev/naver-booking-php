@@ -59,19 +59,19 @@ class RequestHandler
         return $res;
     }
 
-    public function patch($url, $body, $is_fail_on_error = false)
-    {
+    public function patch($url, $body, $http_success_codes = []
+    ) {
         $ch = curl_init();
 
-        
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->header_post);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-        
+
         $res = curl_exec($ch);
-        if ($is_fail_on_error) {$this->_failOnNonHttpCodes($ch, $res);}
+        if (!empty($http_success_codes)) {
+            $this->_failOnNonHttpCodes($ch, $res, $http_success_codes);}
 
         curl_close($ch);
 
@@ -106,13 +106,10 @@ class RequestHandler
         curl_setopt($ch, CURLOPT_FAILONERROR, $bool);
     }
 
-    private static function _failOnNonHttpCodes($ch, $res, $http_codes = [])
+    private static function _failOnNonHttpCodes($ch, $res, $http_success_codes)
     {
-        // Fail if not 200 or 204
-        $http_codes = empty($http_codes) ? [200, 204] : $http_codes;
-        if (!in_array(curl_getinfo($ch, CURLINFO_HTTP_CODE), $http_codes)) {
-            throw new \Exception($res);
-        }
+        if (!in_array(curl_getinfo($ch, CURLINFO_HTTP_CODE), $http_success_codes)) {
+            throw new \Exception($res);}
     }
 
     private static function _makeHeaderGet($accessToken)

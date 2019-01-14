@@ -71,7 +71,7 @@ class BusinessService extends ServiceBase
      */
     public function mapBusiness($naverUserId, $businessId, $agencyKey)
     {
-        $curl_fail_on_error = false;
+        $http_success_codes = [200, 201, 204];
 
         // true 면 대행권 획득, false 면 대행권 해지 요청.
         $data['isAgencyConnected'] = true;
@@ -80,21 +80,22 @@ class BusinessService extends ServiceBase
         $data['naverId'] = $naverUserId;
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}/agency-mappings",
-            json_encode($data), $curl_fail_on_error);
+            json_encode($data), $http_success_codes);
         return $res;
     }
 
     public function unmapBusiness($naverUserId, $businessId, $agencyKey)
     {
+        $http_success_codes = [200, 201, 204];
+
         // true 면 대행권 획득, false 면 대행권 해지 요청.
-        $curl_fail_on_error = true;
         $data['isAgencyConnected'] = false;
         $data['isAgencyKeyUsed'] = true;
         $data['agencyKey'] = $agencyKey;
         $data['naverId'] = $naverUserId;
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}/agency-mappings",
-            json_encode($data), $curl_fail_on_error);
+            json_encode($data), $http_success_codes);
         return $res;
     }
 
