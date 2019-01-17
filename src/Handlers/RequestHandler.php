@@ -20,6 +20,7 @@ class RequestHandler
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->header_get);
 
+        $res = curl_exec($ch);
         if (!empty($http_success_codes)) {
             $this->_failOnNonHttpCodes($ch, $res, $http_success_codes);}
 

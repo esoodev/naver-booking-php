@@ -13,7 +13,7 @@ class BusinessService extends ServiceBase
     {
         $res = $this->requestHandler->get(
             $this->hostUri . "/v3.0/businesses?account=${accountName}&" .
-            "page=${page}&size=${size}");
+            "page=${page}&size=${size}", [200]);
         return json_decode($res, true);
     }
 
@@ -22,27 +22,6 @@ class BusinessService extends ServiceBase
         $res = $this->requestHandler->get(
             $this->hostUri . "/v3.1/businesses/{$businessId}");
         return json_decode($res);
-    }
-
-    public function getBusinessIdsByBusinessName($accountName,
-        $businessName) {
-        $businesses = $this->getBusinesses($accountName);
-        return ArrayHelper::mapForKey('name', $businessName,
-            'businessId', $businesses);
-    }
-
-    /**
-     * Returns the first occurence.
-     */
-    public function getBusinessIdByBusinessName($accountName, $businessName)
-    {
-        return $this->getBusinessIdsByBusinessName($accountName, $businessName)[0];
-    }
-
-    public function getBusinessesByBusinessName($accountName, $businessName)
-    {
-        $businesses = $this->getBusinesses($accountName);
-        return ArrayHelper::searchForKey('name', $businessName, $businesses);
     }
 
     public function createBusiness(Business $business)
@@ -104,24 +83,21 @@ class BusinessService extends ServiceBase
      * representation within Business class changes.
      * $address[jibun/road address, address detail]
      */
-    public function editBusinessAddressById(int $businessId, array $address,
+    public function editBusinessAddress(int $businessId, array $address,
         $isRoadAddr = false) {
-        $business = Business::example();
-        $newAddressJson = [];
-        if ($isRoadAddr) {
-            $newAddressJson = $business->setAddressRoad($address[0], true);
-        } else {
-            $newAddressJson = $business->setAddressJibun($address[0], true);
-        }
-        $newAddressJson = array_merge_recursive($newAddressJson,
-            $business->setAddressDetail($address[1], true));
+        $business = Business::example();        
+        $isRoadAddr ?
+        $business->setAddressRoad($address[0], true) :
+        $business->setAddressJibun($address[0], true);
+        
+        isset($address[1]) ? $business->setAddressDetail($address[1], true) : null;
 
         $data['businessId'] = $businessId;
-        $data = array_merge_recursive($data, $newAddressJson);
+        $data['addressJson'] = $business->getAddresses();
 
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}",
-            json_encode($data), true);
+            json_encode($data), [204]);
         return $res;
     }
 

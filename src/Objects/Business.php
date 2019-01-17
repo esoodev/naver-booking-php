@@ -170,7 +170,7 @@ class Business
 
     public function setAddressRoad($newAddressRoad)
     {
-        $this->addressJson['roadAddr'] = $newAddressJibun;
+        $this->addressJson['roadAddr'] = $newAddressRoad;
     }
 
     public function setAddressDetail($newAddressDetail)
