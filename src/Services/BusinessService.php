@@ -48,7 +48,7 @@ class BusinessService extends ServiceBase
     public function createBusiness(Business $business)
     {
         $res = $this->requestHandler->post(
-            $this->hostUri . "/v3.1/businesses", json_encode($business));
+            $this->hostUri . "/v3.1/businesses", json_encode($business), [201]);
         return json_decode($res);
     }
 
@@ -57,8 +57,8 @@ class BusinessService extends ServiceBase
         $data['businessId'] = $businessId;
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}",
-            json_encode($data));
-        return $res;
+            json_encode($data), [204]);
+        return json_decode($res);
     }
 
     /**
@@ -107,7 +107,7 @@ class BusinessService extends ServiceBase
     public function editBusinessAddressById(int $businessId, array $address,
         $isRoadAddr = false) {
         $business = Business::example();
-        $newAddressJson;
+        $newAddressJson = [];
         if ($isRoadAddr) {
             $newAddressJson = $business->setAddressRoad($address[0], true);
         } else {
@@ -124,6 +124,5 @@ class BusinessService extends ServiceBase
             json_encode($data), true);
         return $res;
     }
-    
 
 }

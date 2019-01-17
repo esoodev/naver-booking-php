@@ -12,6 +12,8 @@ use PHPUnit\Framework\TestCase;
 require_once dirname(__FILE__) . "/../src/Services/BusinessService.php";
 require_once dirname(__FILE__) . "/../src/Handlers/RequestHandler.php";
 require_once dirname(__FILE__) . "/../src/Config/NaverBookingConfig.php";
+require_once dirname(__FILE__) . "/../src/Objects/Business.php";
+require_once dirname(__FILE__) . "/../src/Objects/Dictionary.php";
 
 final class BusinessServiceTest extends TestCase
 {
@@ -31,12 +33,11 @@ final class BusinessServiceTest extends TestCase
     const TEST_GET_BUSINESS = 0;
     const TEST_GET_BUSINESSIDS_BY_NAME = 0;
     const TEST_GET_BUSINESSES_BY_NAME = 0;
-    const TEST_CREATE_BUSINESS = 0;
+    const TEST_CREATE_BUSINESS = 1;
     const TEST_EDIT_BUSINESS = 0;
     const TEST_EDIT_BUSINESS_ADDR_BY_ID = 0;
     const TEST_MAP_BUSINESS = 0;
-    const TEST_UNMAP_BUSINESS = 1;
-
+    const TEST_UNMAP_BUSINESS = 0;
 
     public function testCanGetBusinesses(): void
     {
@@ -106,42 +107,45 @@ final class BusinessServiceTest extends TestCase
 
     public function testCanCreateBusiness(): void
     {
-        if (self::TEST_CREATE_BUSINESS) {
-            $service = new BusinessService(self::ACCESS_TOKEN);
-            $business = Business::example();
-            $res = $service->createBusiness($business);
-
-            self::_outputFile('create-business-body.json',
-                json_encode($business, JSON_UNESCAPED_UNICODE));
-            self::_outputFile('create-business-res.json',
-                json_encode($res, JSON_UNESCAPED_UNICODE));
-            $this->expectOutputString('');
-            var_dump($res);
-        } else {
-            echo ("\nSkipping testCanCreateBusiness()");
-        }
+        $error = null;
+        self::_test('Create Business', function() use (&$error) {
+            try {
+                $service = new BusinessService(self::ACCESS_TOKEN);
+                $business = Business::example();
+                // $agency_key = $this->_createAgencyKey();
+                $agency_key = 'NBT_gsrHoGjh ';
+                $business->setAgencyKey($agency_key);
+                $business->setServiceName($agency_key, true);
+                $res = $service->createBusiness($business);
+            } catch (\Exception $e) {
+                $error = $this->_catchException($e);
+            }
+        }, self::TEST_CREATE_BUSINESS);
+        $this->assertNull($error);
     }
 
     public function testCanEditBusiness(): void
-    {
-        if (self::TEST_EDIT_BUSINESS) {
-            $service = new BusinessService(self::ACCESS_TOKEN);
-            $business = Business::example();
-            $data = array_merge_recursive(
-                $business->setServiceName('new damn name', true),
-                $business->setServiceDesc('new damn service desc', true),
-                $business->setBusinessName('아웃백 스테이크 하아 힘들다!', true),
-                $business->setBusinessEmail('123@naver.com', true)
-            );
-            $res = $service->editBusiness(16363, $data);
-
-            self::_outputFile('edit-business-res.json',
-                json_encode($res, JSON_UNESCAPED_UNICODE));
-            $this->expectOutputString('');
-            var_dump($res);
-        } else {
-            echo ("\nSkipping testCanEditBusiness()");
-        }
+    {   
+        $error = null;
+        self::_test('Edit Business', function() use ($error) {
+            try {
+                $service = new BusinessService(self::ACCESS_TOKEN);
+                $business = Business::example();
+                $business->setServiceName('new damn name!', true);
+                $business->setServiceDesc('new damn service desc', true);
+                $business->setBusinessName('아웃백 스테이크 하아 힘들다!', true);
+                $business->setBusinessEmail('123@naver.com', true);
+                unset($business->agencyKey);
+                unset($business->bookingTimeUnitCode);
+                unset($business->businessTypeId);
+                unset($business->businessCategory);
+                $data = json_decode(json_encode($business, JSON_UNESCAPED_UNICODE), true);
+                $res = $service->editBusiness(19835, $data);
+            } catch (\Exception $e) {
+                $error = $this->_catchException($e);
+            }
+        }, self::TEST_EDIT_BUSINESS);
+        $this->assertNull($error);
     }
 
     public function testCanEditBusinessAddressById(): void
@@ -152,14 +156,14 @@ final class BusinessServiceTest extends TestCase
             $addrRoad2 = "서울특별시 강남구 강남대로102길 34";
             $addrJibun1 = "서울특별시 서초구 잠원로 51";
             $addrJibun2 = "서울특별시 강남구 신사동 623-2";
-            $res = $service->editBusinessAddressById(16363, [$addrJibun2, '테스트 상세'],
+            $res = $service->editBusinessAddressById(19835, [$addrJibun2, '주소 상세'],
                 true);
             self::_outputFile('edit-business-addr-res.json',
                 json_encode($res, JSON_UNESCAPED_UNICODE));
             $this->expectOutputString('');
             var_dump($res);
         } else {
-            echo ("\nSkipping testCanEditBusiness()");
+            echo ("\nSkipping testCanEditBusinessAddressById()");
         }
     }
 
@@ -186,14 +190,14 @@ final class BusinessServiceTest extends TestCase
             $service = new BusinessService(self::ACCESS_TOKEN);
             $businessId = 19695;
             $agencyKey = 'POI_dnFUoGbd';
-            try{
+            try {
                 $res = $service->unmapBusiness('yata62', $businessId, $agencyKey);
                 self::_outputFile('unmap-businesses.json',
                     json_encode($res, JSON_UNESCAPED_UNICODE));
-    
+
                 $this->expectOutputString('');
                 var_dump($res);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 var_dump($e->getMessage());
             }
         } else {
@@ -201,11 +205,37 @@ final class BusinessServiceTest extends TestCase
         }
     }
 
+    private static function _test($test_name, $test_function, $is_skip)
+    {if ($is_skip) {$test_function();} else {echo ("\nSkipping ${test_name}...");}}
+
     private static function _outputFile($filename, $data): void
     {
         $fp = fopen(dirname(__FILE__) . "/outputs/BusinessService/${filename}", 'w');
         fwrite($fp, $data);
         fclose($fp);
+    }
+
+    private static function _catchException(\Exception $e): array
+    {
+        $_e['message'] = $e->getMessage();
+        $_e['code'] = $e->getCode();
+        return $_e;
+    }
+
+    private static function _createAgencyKey() {
+        $createRandString = function($length) {
+            $random = '';
+            for ($i = 0; $i < $length; $i++) {
+                $is_cap = mt_rand(0, 1);
+                if ((bool) $is_cap) {
+                    $random .= chr(mt_rand(97, 122));
+                } else {
+                    $random .= chr(mt_rand(65, 90));
+                }
+            }
+            return $random;
+        };
+        return 'NBT_'.$createRandString(8);
     }
 
 }

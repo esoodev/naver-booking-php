@@ -13,20 +13,22 @@ class RequestHandler
         $this->_makeHeaderPostData($accessToken);
     }
 
-    public function get($url)
+    public function get($url, $http_success_codes = [])
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->header_get);
 
-        $res = curl_exec($ch);
+        if (!empty($http_success_codes)) {
+            $this->_failOnNonHttpCodes($ch, $res, $http_success_codes);}
+
         curl_close($ch);
 
         return $res;
     }
 
-    public function post($url, $body)
+    public function post($url, $body, $http_success_codes = [])
     {
         $ch = curl_init();
 
@@ -37,12 +39,15 @@ class RequestHandler
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 
         $res = curl_exec($ch);
+        if (!empty($http_success_codes)) {
+            $this->_failOnNonHttpCodes($ch, $res, $http_success_codes);}
+
         curl_close($ch);
 
         return $res;
     }
 
-    public function postData($url, $body)
+    public function postData($url, $body, $http_success_codes = [])
     {
         $ch = curl_init();
 
@@ -54,6 +59,9 @@ class RequestHandler
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
 
         $res = curl_exec($ch);
+        if (!empty($http_success_codes)) {
+            $this->_failOnNonHttpCodes($ch, $res, $http_success_codes);}
+
         curl_close($ch);
 
         return $res;
@@ -78,7 +86,7 @@ class RequestHandler
         return $res;
     }
 
-    public function delete($url)
+    public function delete($url, $http_success_codes = [])
     {
         $ch = curl_init();
 
@@ -88,6 +96,9 @@ class RequestHandler
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
 
         $res = curl_exec($ch);
+        if (!empty($http_success_codes)) {
+            $this->_failOnNonHttpCodes($ch, $res, $http_success_codes);}
+
         curl_close($ch);
 
         return $res;
@@ -108,8 +119,9 @@ class RequestHandler
 
     private static function _failOnNonHttpCodes($ch, $res, $http_success_codes)
     {
-        if (!in_array(curl_getinfo($ch, CURLINFO_HTTP_CODE), $http_success_codes)) {
-            throw new \Exception($res);}
+        $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if (!in_array($responseCode, $http_success_codes)) {
+            throw new \Exception($res, $responseCode);}
     }
 
     private static function _makeHeaderGet($accessToken)
