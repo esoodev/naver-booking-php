@@ -110,7 +110,7 @@ class Reservation
     {
         $date = $this->getDateString();
         $time = $this->getTimeString();
-        return (new DateTime("${date} ${time}"))->format($format);
+        return (new \DateTime("${date} ${time}"))->format($format);
     }
 
     /**
@@ -118,7 +118,7 @@ class Reservation
      */
     public function getDateString($format = 'Y-m-d')
     {
-        return (new DateTime($this->date))->format($format);
+        return (new \DateTime($this->date))->format($format);
     }
 
     /**
@@ -128,7 +128,7 @@ class Reservation
     {
         $hours = intval($this->minute / 60);
         $mins = $this->minute % 60;
-        return (new DateTime("${hours}:${mins}"))->format($format);
+        return (new \DateTime("${hours}:${mins}"))->format($format);
     }
 
     public function setData(array $data)

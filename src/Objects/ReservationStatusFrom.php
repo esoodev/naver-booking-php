@@ -30,7 +30,7 @@ class ReservationStatusFrom
 
     public function getDateTime($format = 'Y-m-d H:i:s')
     {
-        return (new DateTime($this->dateTime))->format($format);
+        return (new \DateTime($this->dateTime))->format($format);
     }
 
     /**
@@ -38,7 +38,7 @@ class ReservationStatusFrom
      */
     public function getDateString($format = 'Y-m-d')
     {
-        return (new DateTime($this->dateTime))->format($format);
+        return (new \DateTime($this->dateTime))->format($format);
     }
 
     /**
@@ -46,7 +46,7 @@ class ReservationStatusFrom
      */
     public function getTimeString($format = 'H:i')
     {
-        return (new DateTime($this->dateTime))->format($format);
+        return (new \DateTime($this->dateTime))->format($format);
     }
 
     public function getReservationDetails()
