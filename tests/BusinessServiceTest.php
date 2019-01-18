@@ -10,7 +10,9 @@ use NaverBooking\Services\BusinessService;
 use PHPUnit\Framework\TestCase;
 
 require_once dirname(__FILE__) . "/../src/Services/BusinessService.php";
+require_once dirname(__FILE__) . "/../src/Services/MiscService.php";
 require_once dirname(__FILE__) . "/../src/Handlers/RequestHandler.php";
+require_once dirname(__FILE__) . "/../src/Helpers/ArrayHelper.php";
 require_once dirname(__FILE__) . "/../src/Config/NaverBookingConfig.php";
 require_once dirname(__FILE__) . "/../src/Objects/Business.php";
 require_once dirname(__FILE__) . "/../src/Objects/Dictionary.php";
@@ -29,13 +31,11 @@ final class BusinessServiceTest extends TestCase
         '1b212638e653d4570087a32631d518588a45a30259d174bec' .
         'c0583dee7f5aca17515d58d15911e416';
 
-    const TEST_GET_BUSINESS = 1;
+    const TEST_GET_BUSINESS = 0;
     const TEST_GET_BUSINESSES = 0;
-    const TEST_GET_BUSINESSIDS_BY_NAME = 0;
-    const TEST_GET_BUSINESSES_BY_NAME = 0;
     const TEST_CREATE_BUSINESS = 0;
-    const TEST_EDIT_BUSINESS = 1;
-    const TEST_EDIT_BUSINESS_ADDR = 0;
+    const TEST_EDIT_BUSINESS = 0;
+    const TEST_EDIT_BUSINESS_ADDR = 1;
     const TEST_MAP_BUSINESS = 0;
     const TEST_UNMAP_BUSINESS = 0;
 
@@ -90,7 +90,7 @@ final class BusinessServiceTest extends TestCase
     public function testCanEditBusiness(): void
     {
         $error = null;
-        self::_test('Edit Business', function () use ($error) {
+        self::_test('Edit Business', function () use (&$error) {
             try {
                 $service = new BusinessService(self::ACCESS_TOKEN);
                 $business = Business::example();
@@ -98,6 +98,7 @@ final class BusinessServiceTest extends TestCase
                 $business->setServiceDesc('new damn service desc', true);
                 $business->setBusinessName('아웃백 스테이크 하아 힘들다!', true);
                 $business->setBusinessEmail('123@naver.com', true);
+                $business->bizNumber = '2178139965';
                 unset($business->agencyKey);
                 unset($business->bookingTimeUnitCode);
                 unset($business->businessTypeId);
@@ -111,18 +112,17 @@ final class BusinessServiceTest extends TestCase
         $this->assertNull($error);
     }
 
-    public function testCaneditBusinessAddress(): void
+    public function testCanSetBusinessAddress(): void
     {
         $error = null;
-        self::_test('Edit Business Address', function () use ($error) {
+        self::_test('Edit Business Address', function () use (&$error) {
             try {
                 $service = new BusinessService(self::ACCESS_TOKEN);
                 $addrRoad1 = "서울특별시 강남구 압구정로 165";
                 $addrRoad2 = "서울특별시 강남구 강남대로102길 34";
                 $addrJibun1 = "서울특별시 서초구 잠원로 51";
                 $addrJibun2 = "서울특별시 강남구 신사동 623-2";
-                $res = $service->editBusinessAddress(19867,
-                    [$addrRoad1, '주소 상세'], true);
+                $res = $service->setBusinessAddress(19890, $addrJibun2, '주소 상세');
             } catch (\Exception $e) {
                 $error = $this->_catchException($e);
             }
@@ -133,7 +133,7 @@ final class BusinessServiceTest extends TestCase
     public function testCanMapBusiness(): void
     {
         $error = null;
-        self::_test('Map Business access', function () use ($error) {
+        self::_test('Map Business access', function () use (&$error) {
             try {
                 $service = new BusinessService(self::ACCESS_TOKEN);
                 $businessId = 19695;
@@ -149,7 +149,7 @@ final class BusinessServiceTest extends TestCase
     public function testCanUnmapBusiness(): void
     {
         $error = null;
-        self::_test('Unmap Business access', function () use ($error) {
+        self::_test('Unmap Business access', function () use (&$error) {
             try {
                 $service = new BusinessService(self::ACCESS_TOKEN);
                 $businessId = 19695;
@@ -174,7 +174,6 @@ final class BusinessServiceTest extends TestCase
 
     private static function _catchException(\Exception $e): array
     {
-        var_dump($e);
         $_e['message'] = $e->getMessage();
         $_e['code'] = $e->getCode();
         return $_e;

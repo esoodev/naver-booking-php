@@ -45,7 +45,7 @@ class ArrayHelper
         foreach ($arr as $key => &$value) {
             if (is_array($value)) {
                 if (count($value) > 0) {
-                    self::_arraySetValuesNull($value);
+                    self::setValuesNullRecursive($value);
                 }
             } else {
                 if (isset($value)) {

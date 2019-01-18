@@ -1,8 +1,8 @@
 <?php
 namespace NaverBooking\Services;
 
-use NaverBooking\Helpers\ArrayHelper;
 use NaverBooking\Objects\Business;
+use NaverBooking\Services\MiscService;
 use NaverBooking\Services\ServiceBase;
 
 require_once dirname(__FILE__) . "/ServiceBase.php";
@@ -83,17 +83,19 @@ class BusinessService extends ServiceBase
      * representation within Business class changes.
      * $address[jibun/road address, address detail]
      */
-    public function editBusinessAddress(int $businessId, array $address,
-        $isRoadAddr = false) {
-        $business = Business::example();        
-        $isRoadAddr ?
-        $business->setAddressRoad($address[0], true) :
-        $business->setAddressJibun($address[0], true);
-        
-        isset($address[1]) ? $business->setAddressDetail($address[1], true) : null;
-
+    public function setBusinessAddress(int $businessId, $address, $addressDesc)
+    {
         $data['businessId'] = $businessId;
-        $data['addressJson'] = $business->getAddresses();
+        $data['addressJson'] = [];
+
+        if (isset($addressDesc)) {$data['addressJson']['detail'] = $addressDesc;}
+
+        $miscService = new MiscService($this->getAccessToken());
+        $addrSearchResult = $miscService->searchAddress($address);
+        $addressInfo = isset($addrSearchResult) ? $addrSearchResult[0] : null;
+
+        $data['addressJson']['roadAddr'] = $addressInfo['roadAddress'];
+        $data['addressJson']['jibun'] = $addressInfo['address'];
 
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}",

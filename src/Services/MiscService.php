@@ -12,9 +12,10 @@ class MiscService extends ServiceBase
 
     public function searchAddress($query, $pageSize = 1,
         $reformatAddress = true) {
+        $query = urlencode($query);
         $res = $this->requestHandler->get(
             $this->hostUri . "/v3.0/addresses?" .
-            "query=${query}&pageSize=${pageSize}");
+            "query=${query}&pageSize=${pageSize}", [200]);
 
         return json_decode($res, true);
     }
