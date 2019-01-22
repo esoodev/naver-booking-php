@@ -2,7 +2,7 @@
 namespace NaverBooking\Objects;
 
 use NaverBooking\Objects\Dictionary;
-use NaverBooking\Objects\ProductDesc;
+use NaverBooking\Objects\ExtraDesc;
 use NaverBooking\Helpers\ArrayHelper;
 
 class Business
@@ -136,7 +136,7 @@ class Business
      * SETTERS
      */
 
-    public function addExtraDesc(ProductDesc $extraDesc)
+    public function addExtraDesc(ExtraDesc $extraDesc)
     {
         if (!property_exists($this, 'extraDescJson') ||
             !isset($this->extraDescJson)) {
