@@ -54,4 +54,7 @@ class ArrayHelper
             }
         }
     }
+
+    public static function objectToArray(&$object)
+    {return json_decode(json_encode($object, JSON_UNESCAPED_UNICODE), true);}
 }

@@ -33,9 +33,9 @@ final class BusinessServiceTest extends TestCase
 
     const TEST_GET_BUSINESS = 0;
     const TEST_GET_BUSINESSES = 0;
-    const TEST_CREATE_BUSINESS = 0;
+    const TEST_CREATE_BUSINESS = 1;
     const TEST_EDIT_BUSINESS = 0;
-    const TEST_EDIT_BUSINESS_ADDR = 1;
+    const TEST_EDIT_BUSINESS_ADDR = 0;
     const TEST_MAP_BUSINESS = 0;
     const TEST_UNMAP_BUSINESS = 0;
 
@@ -161,6 +161,10 @@ final class BusinessServiceTest extends TestCase
         }, self::TEST_UNMAP_BUSINESS);
         $this->assertNull($error);
     }
+
+    /**
+     *  PRIVATE METHODS
+     */
 
     private static function _test($test_name, $test_function, $is_skip)
     {if ($is_skip) {$test_function();} else {echo ("\nSkipping ${test_name}..");}}

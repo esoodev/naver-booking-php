@@ -11,7 +11,7 @@ class ProductService extends ServiceBase
     public function getProducts($businessId)
     {
         $res = $this->requestHandler->get(
-            $this->hostUri . "/v3.1/businesses/${businessId}/biz-items");
+            $this->hostUri . "/v3.1/businesses/${businessId}/biz-items", [200]);
         return json_decode($res, true);
     }
 
@@ -19,7 +19,7 @@ class ProductService extends ServiceBase
     {
         $res = $this->requestHandler->get(
             $this->hostUri . "/v3.1/businesses/${businessId}/" .
-            "biz-items/${productId}");
+            "biz-items/${productId}", [200]);
         return json_decode($res, true);
     }
 
@@ -27,7 +27,7 @@ class ProductService extends ServiceBase
     {
         $res = $this->requestHandler->post(
             $this->hostUri . "/v3.1/businesses/${businessId}/biz-items",
-            json_encode($product));
+            json_encode($product), [201]);
         return json_decode($res);
     }
 
@@ -36,7 +36,7 @@ class ProductService extends ServiceBase
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}/" .
             "biz-items/${productId}",
-            json_encode($data));
+            json_encode($data), [204]);
         return $res;
     }
 }

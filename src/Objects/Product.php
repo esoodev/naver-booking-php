@@ -24,6 +24,9 @@ class Product
         }
     }
 
+    public static function createEmpty()
+    {return new self([]);}
+
     public static function example()
     {
         return new self(null, true);
@@ -43,7 +46,7 @@ class Product
         $f['uncompletedBookingProcessCode'] =
         Dictionary::UNCOMPLETED_BOOKING_PROCESS_CODES['완료']; // 미사용 티켓 처리 코드
 
-        $f['bizItemResources'][0]['resourceTypeCode'] =
+        $f['businessResources'][0]['resourceTypeCode'] =
         Dictionary::RESOURCE_TYPE_CODES['대표이미지']; // 상품 리소스 list
         $f['businessResources'][0]['resourceUrl'] = "";
 
@@ -73,7 +76,7 @@ class Product
         $f['bookableSettingJson']['closeHours'] = 0; // 시작일 + 1시간 이후 마감
 
         if (!$setDefault) {
-            self::_arraySetValuesNull($f);
+            ArrayHelper::setValuesNullRecursive($f);
         }
 
         return $f;
@@ -101,9 +104,9 @@ class Product
         return $this->desc;
     }
 
-    public function getProductPrecation()
+    public function getProductPrecaution()
     {
-        return $this->bookingPrecation;
+        return $this->bookingPrecaution;
     }
 
     public function getBookingGuide()
@@ -177,11 +180,18 @@ class Product
         $this->desc = $desc;
     }
 
-    public function setProductPrecation($bookingPrecation)
+    public function setProductPrecaution($bookingPrecaution)
     {
-        $this->bookingPrecation = $bookingPrecation;
+        $this->bookingPrecaution = $bookingPrecaution;
     }
 
+    // 상품 노출 설정 : true 는 노출; false 는 비노출.
+    public function setIsShow($isImp)
+    {
+        $this->isImp = $isImp;
+    }
+
+    // 상품 재고 노출 설정 : true 는 노출; false 는 비노출.
     public function setIsShowRemaining($isImpStock)
     {
         $this->isImpStock = $isImpStock;
