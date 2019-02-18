@@ -1,8 +1,8 @@
 <?php
 namespace NaverBooking\Services;
 
-use NaverBooking\Handlers\RequestHandler;
 use NaverBooking\Config\NaverBookingConfig;
+use NaverBooking\Handlers\RequestHandler;
 
 class ServiceBase
 {
@@ -14,9 +14,9 @@ class ServiceBase
         $this->hostUri = self::getHostUri($hostType);
     }
 
-    public static function fromAccessToken($accessToken)
+    public static function create($accessToken, $hostType = 'development')
     {
-        return new self($accessToken);
+        return new self($accessToken, $hostType);
     }
 
     public static function getHostUri($hostType)

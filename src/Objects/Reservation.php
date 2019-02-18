@@ -131,6 +131,11 @@ class Reservation
         return (new \DateTime("${hours}:${mins}"))->format($format);
     }
 
+    public function isEdit()
+    {
+        return property_exists($this, 'previousBookingId');
+    }
+
     public function setData(array $data)
     {
         foreach ($data as $key => $value) {

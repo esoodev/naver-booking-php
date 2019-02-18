@@ -58,8 +58,7 @@ class OptionService extends ServiceBase
         return json_decode($res);
     }
 
-    public function editOption($businessId, $optionId,
-        array $data) {
+    public function editOption($businessId, $optionId, Option $data) {
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}" .
             "/options/${optionId}",
