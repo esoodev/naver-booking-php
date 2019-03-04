@@ -1,0 +1,4 @@
+{
+    "errorCode": "BusinessNonUnique",
+    "reason": "중복된 업체입니다. - agencyBizId : PREFIX_01234"
+}

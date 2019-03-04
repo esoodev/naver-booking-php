@@ -1,4 +1,5 @@
 <?php
+namespace NaverBooking\Helpers;
 
 class ArrayHelper
 {
@@ -44,7 +45,7 @@ class ArrayHelper
         foreach ($arr as $key => &$value) {
             if (is_array($value)) {
                 if (count($value) > 0) {
-                    self::_arraySetValuesNull($value);
+                    self::setValuesNullRecursive($value);
                 }
             } else {
                 if (isset($value)) {
@@ -53,4 +54,7 @@ class ArrayHelper
             }
         }
     }
+
+    public static function objectToArray(&$object)
+    {return json_decode(json_encode($object, JSON_UNESCAPED_UNICODE), true);}
 }

@@ -1,4 +1,5 @@
 <?php
+namespace NaverBooking\Config;
 
 class NaverBookingConfig
 {

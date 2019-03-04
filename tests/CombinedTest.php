@@ -4,6 +4,11 @@
  */
 
 declare (strict_types = 1);
+use NaverBooking\Objects\Business;
+use NaverBooking\Objects\Address;
+use NaverBooking\Services\BusinessService;
+use NaverBooking\Services\MiscService;
+use NaverBooking\Services\OptionService;
 use PHPUnit\Framework\TestCase;
 
 final class CombinedTest extends TestCase
@@ -22,15 +27,15 @@ final class CombinedTest extends TestCase
     const BUSINESS_ID = 16363;
 
     const TEST_EDIT_BUSINESS_ADDR_TO_SEARCH_RES = 1;
-    const TEST_LINK_OPTION_TO_BUSINESS = 0;
+    const TEST_LINK_OPTION_TO_BUSINESS = 1;
 
     public function testCanEditBusinessAddressToSearchResult(): void
     {
         if (self::TEST_EDIT_BUSINESS_ADDR_TO_SEARCH_RES) {
-            $bs = new NaverBusinessService(self::ACCESS_TOKEN);
-            $ms = new NaverMiscService(self::ACCESS_TOKEN);
-            $business = new NaverBusiness($bs->getBusiness(self::BUSINESS_ID));
-            $address = (new NaverAddress($ms->searchAddress('김가네')[0]))->toReformatJSON();
+            $bs = new BusinessService(self::ACCESS_TOKEN);
+            $ms = new MiscService(self::ACCESS_TOKEN);
+            $business = new Business($bs->getBusiness(self::BUSINESS_ID));
+            $address = (new Address($ms->searchAddress('김가네')[0]))->toReformatJSON();
             self::_outputFile('edit-address-search-addr.json',
                 json_encode($address, JSON_UNESCAPED_UNICODE));
 
@@ -48,9 +53,9 @@ final class CombinedTest extends TestCase
 
     public function testCanLinkOptionToBusiness(): void
     {
-        $bs = new NaverBusinessService(self::ACCESS_TOKEN);
-        $os = new NaverOptionService(self::ACCESS_TOKEN);
-        $ms = new NaverMiscService(self::ACCESS_TOKEN);
+        $bs = new BusinessService(self::ACCESS_TOKEN);
+        $os = new OptionService(self::ACCESS_TOKEN);
+        $ms = new MiscService(self::ACCESS_TOKEN);
 
         $businessId = $bs->getBusinessIdByBusinessName('trustusdev',
             '아웃백 스테이크 하아 힘들다!');

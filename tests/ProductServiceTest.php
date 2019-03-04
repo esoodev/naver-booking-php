@@ -4,7 +4,17 @@
  */
 
 declare (strict_types = 1);
+
+use NaverBooking\Objects\Product;
+use NaverBooking\Services\ProductService;
 use PHPUnit\Framework\TestCase;
+
+require_once dirname(__FILE__) . "/../src/Services/ProductService.php";
+require_once dirname(__FILE__) . "/../src/Handlers/RequestHandler.php";
+require_once dirname(__FILE__) . "/../src/Helpers/ArrayHelper.php";
+require_once dirname(__FILE__) . "/../src/Config/NaverBookingConfig.php";
+require_once dirname(__FILE__) . "/../src/Objects/Product.php";
+require_once dirname(__FILE__) . "/../src/Objects/Dictionary.php";
 
 final class ProductServiceTest extends TestCase
 {
@@ -21,63 +31,99 @@ final class ProductServiceTest extends TestCase
         'c0583dee7f5aca17515d58d15911e416';
 
     const TEST_GET_PRODUCTS = 1;
-    const TEST_GET_PRODUCT = 0;
-    const TEST_CREATE_PRODUCT = 0;
+    const TEST_GET_PRODUCT = 1;
+    const TEST_CREATE_PRODUCT = 1;
+    const TEST_EDIT_PRODUCT = 1;
 
     public function testCanGetProducts(): void
     {
-        if (self::TEST_GET_PRODUCTS) {
-            $service = new ProductService(self::ACCESS_TOKEN);
-            $res = $service->getProducts(16363);
-            self::_outputFile('get-products.json',
-                json_encode($res, JSON_UNESCAPED_UNICODE));
-
-            $this->expectOutputString('');
-            var_dump($res);
-        } else {
-            echo ("\nSkipping testCanGetBusinesses()");
-        }
+        $error = null;
+        self::_test('Get Products', function () use (&$error) {
+            try {
+                $service = new ProductService(self::ACCESS_TOKEN);
+                $res = $service->getProducts(16363);
+            } catch (\Exception $e) {$error = $this->_catchException($e);}
+        }, self::TEST_GET_PRODUCTS);
+        $this->assertNull($error);
     }
 
     public function testCanGetProduct(): void
     {
-        if (self::TEST_GET_PRODUCT) {
-            $service = new ProductService(self::ACCESS_TOKEN);
-            $res = $service->getProducts(16363);
-            self::_outputFile('get-products.json',
-                json_encode($res, JSON_UNESCAPED_UNICODE));
-
-            $this->expectOutputString('');
-            var_dump($res);
-        } else {
-            echo ("\nSkipping testCanGetProduct()");
-        }
+        $error = null;
+        self::_test('Get Product', function () use (&$error) {
+            try {
+                $service = new ProductService(self::ACCESS_TOKEN);
+                $res = $service->getProduct(16363, 107713);
+            } catch (\Exception $e) {$error = $this->_catchException($e);}
+        }, self::TEST_GET_PRODUCT);
+        $this->assertNull($error);
     }
 
     public function testCanCreateProduct(): void
     {
-        if (self::TEST_CREATE_PRODUCT) {
-            $service = new ProductService(self::ACCESS_TOKEN);
-            $product = Product::example();
-            $res = $service->createProduct(16363, $product);
-
-            self::_outputFile('create-product-body.json',
-                json_encode($product, JSON_UNESCAPED_UNICODE));
-            self::_outputFile('create-product-res.json',
-                json_encode($res, JSON_UNESCAPED_UNICODE));
-
-            $this->expectOutputString('');
-            var_dump($res);
-        } else {
-            echo ("\nSkipping testCanCreateProduct()");
-        }
+        $error = null;
+        self::_test('Create Product', function () use (&$error) {
+            try {
+                $service = new ProductService(self::ACCESS_TOKEN);
+                $product = Product::exampleRequiredOnly();
+                $product->setAgencyKey($this->_createAgencyKey());
+                $res = $service->createProduct(16363, $product);
+            } catch (\Exception $e) {$error = $this->_catchException($e);}
+        }, self::TEST_CREATE_PRODUCT);
+        $this->assertNull($error);
     }
+
+    public function testCanEditProduct(): void
+    {
+        $error = null;
+        self::_test('Edit Product', function () use (&$error) {
+            try {
+                $service = new ProductService(self::ACCESS_TOKEN);
+                $product = Product::createEmpty();
+                $product->setProductPrecaution('ttasdfasdfasdf');
+                $product->setIsShow(false);
+                $res = $service->editProduct(20180, 108917, $product);
+            } catch (\Exception $e) {$error = $this->_catchException($e);}
+        }, self::TEST_EDIT_PRODUCT);
+        $this->assertNull($error);
+    }
+
+    /**
+     *  PRIVATE METHODS
+     */
+
+    private static function _test($test_name, $test_function, $is_skip)
+    {if ($is_skip) {$test_function();} else {echo ("\nSkipping ${test_name}..");}}
 
     private static function _outputFile($filename, $data): void
     {
         $fp = fopen(dirname(__FILE__) . "/outputs/ProductService/${filename}", 'w');
         fwrite($fp, $data);
         fclose($fp);
+    }
+
+    private static function _catchException(\Exception $e): array
+    {
+        $_e['message'] = $e->getMessage();
+        $_e['code'] = $e->getCode();
+        return $_e;
+    }
+
+    private static function _createAgencyKey()
+    {
+        $createRandString = function ($length) {
+            $random = '';
+            for ($i = 0; $i < $length; $i++) {
+                $is_cap = mt_rand(0, 1);
+                if ((bool) $is_cap) {
+                    $random .= chr(mt_rand(97, 122));
+                } else {
+                    $random .= chr(mt_rand(65, 90));
+                }
+            }
+            return $random;
+        };
+        return 'NBT_' . $createRandString(8);
     }
 
 }

@@ -1,26 +1,38 @@
 {
-    "name": "esoodev/naver-booking-php",
-    "description": "PHP library for Naver Booking API",
+    "name": "naverbooking/naverbooking",
+    "type": "library",
+    "description": "",
     "keywords": [
-        "naver booking",
-        "naver booking php"
+        "http",
+        "rest",
+        "client",
+        "Naver"
     ],
     "license": "MIT",
     "authors": [
         {
-            "name": "Soomin Lee <esoodev@gmail.com>",
+            "name": "Nathan Lee",
+            "email": "esoodev@gmail.com",
             "homepage": "https://github.com/esoodev"
         }
     ],
     "require": {
-        "php": ">=5.0"
+        "php": ">=5.5",
+        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/psr7": "^1.4",
+        "guzzlehttp/promises": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5"
+        "ext-curl": "*",
+        "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.4 || ^7.0",
+        "psr/log": "^1.0"
     },
     "autoload": {
-        "classmap": [
-            "src/Services/", "src/Objects/"
-        ]
-    }
+        "psr-4": {
+            "NaverBooking\\": "src/"
+        }
+    },
+    "autoload-dev": {},
+    "suggest": {},
+    "extra": {}
 }
