@@ -1,8 +1,9 @@
 <?php
 namespace NaverBooking\Services;
 
-use NaverBooking\Objects\Reservation;
 use NaverBooking\Objects\Dictionary;
+use NaverBooking\Objects\Reservation;
+use NaverBooking\Objects\ReservationStatusTo;
 
 require_once dirname(__FILE__) . "/ServiceBase.php";
 
@@ -42,13 +43,13 @@ class ReservationService extends ServiceBase
     /**
      * $data 는 ReservationStatusTo 형식이다.
      */
-    public function setReservationStatus($businessId, $productId,
-        $reservationId, array $data) {
+    public function editReservationDetail($businessId, $productId,
+        $reservationId, ReservationStatusTo $statusTo) {
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}/" .
-            "biz-items/${productId}/bookings/${bookingId}",
-            json_encode($data));
-        return $res;
+            "biz-items/${productId}/bookings/${reservationId}",
+            json_encode($statusTo), [200]);
+        return json_decode($res, true);
     }
 
     /**

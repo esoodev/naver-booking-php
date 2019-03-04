@@ -62,7 +62,7 @@ class Dictionary
 
     // 예약 상태 - from 대행사 to 네이버
     const BOOKING_STATUS_STRINGS_TO = [
-        'CONFIRMED', 'CANCELLED', 'COMPLETED',
+        'CONFIRMED', 'CANCELLED', 'NOSHOW', 'COMPLETED',
         'READABLE_CODE_COMPLETED', 'PARTIAL_CHANGED',
     ];
 

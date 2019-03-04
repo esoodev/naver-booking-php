@@ -1,6 +1,8 @@
 <?php
 namespace NaverBooking\Objects;
 
+use NaverBooking\Objects\ReservationEdit;
+
 /**
  * NaverReservation 는 API 문서상 Booking 과 동일.
  */
@@ -39,6 +41,13 @@ class Reservation
     }
 
     /**
+     * MISC
+     */
+
+    public function isEdit()
+    {return property_exists($this, 'previousBookingId');}
+
+    /**
      * GETTERS
      */
 
@@ -50,7 +59,6 @@ class Reservation
      */
     public function getStatus()
     {
-
         return $this->status;
     }
 
@@ -113,6 +121,11 @@ class Reservation
         return (new \DateTime("${date} ${time}"))->format($format);
     }
 
+    public function getPreviousBookingId()
+    {
+        return $this->previousBookingId;
+    }
+
     /**
      * eg) 2018-10-16
      */
@@ -129,11 +142,6 @@ class Reservation
         $hours = intval($this->minute / 60);
         $mins = $this->minute % 60;
         return (new \DateTime("${hours}:${mins}"))->format($format);
-    }
-
-    public function isEdit()
-    {
-        return property_exists($this, 'previousBookingId');
     }
 
     public function setData(array $data)

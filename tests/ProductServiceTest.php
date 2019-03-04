@@ -79,9 +79,9 @@ final class ProductServiceTest extends TestCase
         self::_test('Edit Product', function () use (&$error) {
             try {
                 $service = new ProductService(self::ACCESS_TOKEN);
-                $product = Product::createEmpty();
+                $product = Product::create();
                 $product->setProductPrecaution('ttasdfasdfasdf');
-                $product->setIsShow(false);
+                $product->hide();
                 $res = $service->editProduct(20180, 108917, $product);
             } catch (\Exception $e) {$error = $this->_catchException($e);}
         }, self::TEST_EDIT_PRODUCT);

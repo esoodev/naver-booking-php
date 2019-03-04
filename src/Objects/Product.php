@@ -24,8 +24,8 @@ class Product
         }
     }
 
-    public static function createEmpty()
-    {return new self([]);}
+    public static function create($data = [])
+    {return new self($data);}
 
     public static function example()
     {
@@ -185,11 +185,13 @@ class Product
         $this->bookingPrecaution = $bookingPrecaution;
     }
 
-    // 상품 노출 설정 : true 는 노출; false 는 비노출.
-    public function setIsShow($isImp)
-    {
-        $this->isImp = $isImp;
-    }
+    /**
+     * 상품 노출 설정
+     */
+
+    public function setHide($isHide = true){$this->isImp = !$isHide; return $this;}
+
+    public function setShow($isShow = true){$this->isImp = !$isShow; return $this;}
 
     // 상품 재고 노출 설정 : true 는 노출; false 는 비노출.
     public function setIsShowRemaining($isImpStock)

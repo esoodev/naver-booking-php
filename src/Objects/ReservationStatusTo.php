@@ -28,25 +28,30 @@ class ReservationStatusTo
         }
     }
 
-    public function createConfirmed($desc, $data = [])
+    public static function createConfirmed($desc, $data = [])
     {
         $data['status'] = 'CONFIRMED';
         $data['bookingGuide'] =
             $desc; // 예약 확정 시 업주가 고객에게 주는 설명
         return new self($data);
     }
-    public function createCancelled($desc, $data = [])
+    public static function createCancelled($desc, $data = [])
     {
         $data['status'] = 'CANCELLED';
         $data['cancelledDesc'] =
             $desc; // 취소 사유
         return new self($data);
     }
-    public function createCompleted($pin, $data = [])
+    public static function createCompleted($pin, $data = [])
     {
         $data['status'] = 'COMPLETED';
         $data['completedPinValue'] =
             $pin; // 이용완료 시 필요한 PIN
+        return new self($data);
+    }
+    public static function createNoshow($desc = '', $data = [])
+    {
+        $data['status'] = 'NOSHOW';
         return new self($data);
     }
 
