@@ -5,11 +5,13 @@
 
 declare (strict_types = 1);
 
+use NaverBooking\Objects\Dictionary;
 use NaverBooking\Objects\RestaurantSchedule;
 use NaverBooking\Services\ScheduleService;
 use PHPUnit\Framework\TestCase;
 
 require_once dirname(__FILE__) . "/../src/Objects/RestaurantSchedule.php";
+require_once dirname(__FILE__) . "/../src/Objects/Dictionary.php";
 require_once dirname(__FILE__) . "/../src/Services/ScheduleService.php";
 require_once dirname(__FILE__) . "/../src/Handlers/RequestHandler.php";
 require_once dirname(__FILE__) . "/../src/Helpers/ArrayHelper.php";
@@ -30,8 +32,10 @@ final class BusinessServiceTest extends TestCase
         'c0583dee7f5aca17515d58d15911e416';
 
     const TEST_CREATE_RESTAURANT_SCHEDULE = 0;
-    const TEST_DELETE_RESTAURANT_SCHEDULE = 1;
+    const TEST_CREATE_RESTAURANT_SCHEDULES = 0;
+    const TEST_DELETE_RESTAURANT_SCHEDULES = 1;
     const TEST_EDIT_RESTAURANT_SCHEDULE = 0;
+    const TEST_CREATE_AND_BIND_SCHEDULE = 0;
 
     public function testCanCreateRestaurantSchedule(): void
     {
@@ -39,10 +43,9 @@ final class BusinessServiceTest extends TestCase
         self::_test('Create Schedule', function () use (&$error) {
             try {
                 $service = new ScheduleService(self::ACCESS_TOKEN);
-                $schedule = RestaurantSchedule::create(true);
-                $schedule2 = RestaurantSchedule::create(true);
-                $schedule2->setName('test');
-                $res = $service->createSchedules(19695, 109730, [$schedule, $schedule2]);
+                $schedule = RestaurantSchedule::createByDay('mon');
+                $schedule->setPerBlockStock(30);
+                $res = $service->createSchedule(20884, 110353, $schedule);
                 var_dump($res);
                 $this->assertNotNull($res);
             } catch (\Exception $e) {
@@ -52,26 +55,69 @@ final class BusinessServiceTest extends TestCase
         $this->assertNull($error);
     }
 
-    public function testCanDeleteSchedule(): void
+    public function testCanCreateRestaurantSchedules(): void
     {
         $error = null;
-        self::_test('Delete Schedule', function () use (&$error) {
+        self::_test('Create Schedules', function () use (&$error) {
             try {
                 $service = new ScheduleService(self::ACCESS_TOKEN);
-                $schedule1 = RestaurantSchedule::create(true);
-                $schedule2 = RestaurantSchedule::create(true);
-                $schedule2->setName('기본2');
-                $res_create = $service->createSchedules(19695, 109730,
-                    [$schedule1, $schedule2]);
-                // $res_delete = $service->deleteSchedules(19695, 109730,
-                //     [$res_create[0]->scheduleId, $res_create[1]->scheduleId]);
-                var_dump($res_delete);
+                $schedules = [];
+                foreach (Dictionary::SCHEDULE_DAYS as $day => $dayNormalized) {
+                    if (empty($dayNormalized)) {break;}
+                    $schedule = RestaurantSchedule::createByDay($dayNormalized);
+                    $schedule->setStartDateTime('2019-03-04 00:00');
+                    $schedule->setEndDateTime('2019-03-14 23:00');
+                    $schedule->setBlockUnitInMinutes(30);
+                    $schedule->setName($dayNormalized);
+                    $schedule->setPerBlockStock(30);
+                    $schedule->setMinBookingCount(2);
+                    $schedule->setMaxBookingCount(8);
+                    array_push($schedules, $schedule);
+                }
+                $res = $service->createSchedules(20884, 110353, $schedules);
+                $this->assertNotNull($res);
+            } catch (\Exception $e) {
+                $error = $this->_catchException($e);
+            }
+        }, self::TEST_CREATE_RESTAURANT_SCHEDULES);
+        $this->assertNull($error);
+    }
 
+    public function testCanDeleteSchedules(): void
+    {
+        $error = null;
+        self::_test('Delete Schedules', function () use (&$error) {
+            try {
+                $service = new ScheduleService(self::ACCESS_TOKEN);
+                $schedule1 = RestaurantSchedule::createByDay('mon');
+                $schedule2 = RestaurantSchedule::createByDay('tue');
+                $schedule2->setName('기본2');
+                $res_create = $service->createSchedules(20884, 110353,
+                    [$schedule1, $schedule2]);
+                $res_delete = $service->deleteSchedules(20884, 110353,
+                    [$res_create[0]->scheduleId, $res_create[1]->scheduleId]);
                 $this->assertNull($res_delete);
             } catch (\Exception $e) {
                 $error = $this->_catchException($e);
             }
-        }, self::TEST_DELETE_RESTAURANT_SCHEDULE);
+        }, self::TEST_DELETE_RESTAURANT_SCHEDULES);
+        $this->assertNull($error);
+    }
+
+    public function testCanCreateAndBindSchedule(): void
+    {
+        $error = null;
+        self::_test('Create Schedules', function () use (&$error) {
+            try {
+                $service = new ScheduleService(self::ACCESS_TOKEN);
+                $schedule1 = RestaurantSchedule::createByDay('mon');
+                $schedule2 = RestaurantSchedule::createByDay('tue');
+                $res = $service->createSchedule(20884, 20884, $schedule1);
+                $this->assertNotNull($res);
+            } catch (\Exception $e) {
+                $error = $this->_catchException($e);
+            }
+        }, self::TEST_CREATE_AND_BIND_SCHEDULE);
         $this->assertNull($error);
     }
 
@@ -112,5 +158,8 @@ final class BusinessServiceTest extends TestCase
         };
         return 'NBT_' . $createRandString(8);
     }
+
+    private static function _printToConsole($string)
+    {fwrite(STDERR, $string, true);}
 
 }

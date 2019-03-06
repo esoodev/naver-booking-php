@@ -3,26 +3,45 @@ namespace NaverBooking\Objects;
 
 use NaverBooking\Helpers\ArrayHelper;
 
-class RestaurantSchedule 
+class RestaurantSchedule
 {
 
-    public function __construct($data = null, $setDefault = false)
+    public function __construct($data = null)
     {
-        if (isset($data)) {
-            foreach ($data as $key => $value) {$this->{$key} = $value;}
-        } else {
-            foreach (array_merge_recursive(
-                self::requiredFields($setDefault),
-                self::optionalFields($setDefault)) as $key => $value) {
-                $this->{$key} = $value;
-            }
-        }
+        foreach ($data as $key => $value) {$this->{$key} = $value;}
     }
 
-    public static function create($setDefault)
-    {return new self(self::requiredFields($setDefault));}
+    public static function create($data = [])
+    {
+        $schedule = new self($data);
+        $schedule->setName('기본');
+        $schedule->setBlockUnitInMinutes(30);
+        $schedule->setMinBookingCount(1);
+        $schedule->setMaxBookingCount(100);
+        $schedule->setPerBlockStock(10);
+        $schedule->setStartDateTime((new \DateTime())->format('Y-m-d H:i'));
+        $schedule->setEndDateTime('2029-01-10 15:00');
+        return $schedule;
+    }
 
-    public static function requiredFields($setDefault = false)
+    public static function createExample()
+    {return new self(self::requiredFields());}
+
+    /**
+     * 요일별 생성
+     */
+    public static function createByDay($day, $data = [])
+    {
+        $day = strtolower($day);
+        try {
+            // $day = array_key_exists($Dictionary::SCHEDULE_DAYS) ?
+            // Dictionary::SCHEDULE_DAYS[$day] : $day;
+        } catch (\Exception $e) {throw new \Exception("Invalid day '${$day}'.");}
+
+        return self::create(['weekdays' => [$day]]);
+    }
+
+    public static function requiredFields()
     {
         $f['startDate'] = '2019-02-18'; // 스케줄 시작일 (yyyy-MM-dd)
         $f['endDate'] = '2029-02-18'; // 스케줄 종료일 (yyyy-MM-dd)
@@ -34,20 +53,16 @@ class RestaurantSchedule
         $f['stock'] = 30; // 시간대 재고 (일단위로 적용됨)
         $f['minBookingCount'] = 1; // 최소 예약수량
         $f['maxBookingCount'] = 10; // 최대 예약수량
-
-        if (!$setDefault) {ArrayHelper::setValuesNullRecursive($f);}
-
         return $f;
     }
 
-    public static function optionalFields($setDefault = false)
+    public static function optionalFields()
     {
         /**
          * 가격권종 사용할 경우 권종 리스트
          * (스케쥴에 매핑할 가격권종 아이디(priceId)를 노출할 순서대로 입력)
          */
         $f['prices'] = [];
-        if (!$setDefault) {ArrayHelper::setValuesNullRecursive($f);}
         return $f;
     }
 

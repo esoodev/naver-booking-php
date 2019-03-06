@@ -31,9 +31,9 @@ final class BusinessServiceTest extends TestCase
         '1b212638e653d4570087a32631d518588a45a30259d174bec' .
         'c0583dee7f5aca17515d58d15911e416';
 
-    const TEST_GET_BUSINESS = 0;
+    const TEST_GET_BUSINESS = 1;
     const TEST_GET_BUSINESSES = 0;
-    const TEST_CREATE_BUSINESS = 1;
+    const TEST_CREATE_BUSINESS = 0;
     const TEST_EDIT_BUSINESS = 0;
     const TEST_EDIT_BUSINESS_ADDR = 0;
     const TEST_MAP_BUSINESS = 0;
@@ -60,7 +60,8 @@ final class BusinessServiceTest extends TestCase
         self::_test('Get Business', function () use (&$error) {
             try {
                 $service = new BusinessService(self::ACCESS_TOKEN);
-                $res = $service->getBusiness(16363);
+                $res = $service->getBusiness(20884);
+                var_dump(json_encode($res, JSON_UNESCAPED_UNICODE));
                 $this->assertNotNull($res);
             } catch (\Exception $e) {
                 $error = $this->_catchException($e);

@@ -77,4 +77,15 @@ class Dictionary
         'PRICE' => '환불 가격을 강제해서 환불',
         'ALL' => '전액 환불',
     ];
+
+    // 예약 요일
+    const SCHEDULE_DAYS = [
+        'monday' => 'mon',
+        'tuesday' => 'tue',
+        'wednesday' => 'wed',
+        'thursday' => 'thu',
+        'friday' => 'fri',
+        'saturday' => 'sat',
+        'sunday' => 'sun',
+    ];
 }
