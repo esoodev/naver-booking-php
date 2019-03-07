@@ -1,8 +1,6 @@
 <?php
 namespace NaverBooking\Objects;
 
-use NaverBooking\Helpers\ArrayHelper;
-
 class RestaurantSchedule
 {
 
@@ -19,8 +17,9 @@ class RestaurantSchedule
         $schedule->setMinBookingCount(1);
         $schedule->setMaxBookingCount(100);
         $schedule->setPerBlockStock(10);
-        $schedule->setStartDateTime((new \DateTime())->format('Y-m-d H:i'));
+        $schedule->setStartDateTime((new \DateTime())->format('Y-m-d') . ' 00:00');
         $schedule->setEndDateTime('2029-01-10 15:00');
+        $schedule->setAssignToOptions([]);
         return $schedule;
     }
 
@@ -124,6 +123,12 @@ class RestaurantSchedule
     public function getMaxBookingCount()
     {return $this->maxBookingCount;}
 
+    public function getAssignToOptions()
+    {return $this->options;}
+
+    public function getId()
+    {return property_exists($this, 'scheduleId') ? $this->scheduleId : null;}
+
     /**
      * SETTERS
      */
@@ -168,5 +173,27 @@ class RestaurantSchedule
 
     public function setMaxBookingCount(int $count)
     {$this->maxBookingCount = $count;}
+
+    public function setAssignToOption(int $optionId)
+    {$this->setAssignToOptions([$optionId]);return $this;}
+
+    public function setAssignToOptions(array $optionIds)
+    {$this->options = $optionIds;return $this;}
+
+    public function addAssignToOption(int $optionId)
+    {array_push($this->options, $optionId);return $this;}
+
+    public function removeAssignToOption(int $optionId)
+    {$this->options = array_diff($this->options, [$optionId]);return $this;}
+
+    /**
+     * Misc
+     */
+
+    public function toJson()
+    {
+        if (property_exists($this, 'url')) {unset($this->url);}
+        return json_encode($this, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
 
 }

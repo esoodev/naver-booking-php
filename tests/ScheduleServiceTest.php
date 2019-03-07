@@ -31,12 +31,46 @@ final class BusinessServiceTest extends TestCase
         '1b212638e653d4570087a32631d518588a45a30259d174bec' .
         'c0583dee7f5aca17515d58d15911e416';
 
+    const TEST_GET_RESTAURANT_SCHEDULE = 0;
+    const TEST_GET_RESTAURANT_SCHEDULES = 0;
     const TEST_CREATE_RESTAURANT_SCHEDULE = 0;
     const TEST_CREATE_RESTAURANT_SCHEDULES = 0;
-    const TEST_DELETE_RESTAURANT_SCHEDULES = 1;
+    const TEST_DELETE_RESTAURANT_SCHEDULES = 0;
     const TEST_EDIT_RESTAURANT_SCHEDULE = 0;
     const TEST_CREATE_AND_BIND_SCHEDULE = 0;
 
+    public function testCanGetRestaurantSchedule(): void
+    {
+        $error = null;
+        self::_test('Get Schedules', function () use (&$error) {
+            try {
+                $service = new ScheduleService(self::ACCESS_TOKEN);
+                $res = $service->getSchedule(20884, 110353, 322043);
+                var_dump($res);
+                $this->assertNotNull($res);
+            } catch (\Exception $e) {
+                $error = $this->_catchException($e);
+            }
+        }, self::TEST_GET_RESTAURANT_SCHEDULE);
+        $this->assertNull($error);
+    }
+    
+    public function testCanGetRestaurantSchedules(): void
+    {
+        $error = null;
+        self::_test('Get Schedules', function () use (&$error) {
+            try {
+                $service = new ScheduleService(self::ACCESS_TOKEN);
+                $res = $service->getSchedules(20884, 110353);
+                var_dump($res);
+                $this->assertNotNull($res);
+            } catch (\Exception $e) {
+                $error = $this->_catchException($e);
+            }
+        }, self::TEST_GET_RESTAURANT_SCHEDULES);
+        $this->assertNull($error);
+    }
+    
     public function testCanCreateRestaurantSchedule(): void
     {
         $error = null;
@@ -46,7 +80,6 @@ final class BusinessServiceTest extends TestCase
                 $schedule = RestaurantSchedule::createByDay('mon');
                 $schedule->setPerBlockStock(30);
                 $res = $service->createSchedule(20884, 110353, $schedule);
-                var_dump($res);
                 $this->assertNotNull($res);
             } catch (\Exception $e) {
                 $error = $this->_catchException($e);
@@ -104,16 +137,39 @@ final class BusinessServiceTest extends TestCase
         $this->assertNull($error);
     }
 
+    public function testCanEditSchedule(): void
+    {
+        $error = null;
+        self::_test('Delete Schedules', function () use (&$error) {
+            try {
+                $this->assertNull(null);
+            } catch (\Exception $e) {
+                $error = $this->_catchException($e);
+            }
+        }, self::TEST_EDIT_RESTAURANT_SCHEDULE);
+        $this->assertNull($error);
+    }
+
     public function testCanCreateAndBindSchedule(): void
     {
         $error = null;
         self::_test('Create Schedules', function () use (&$error) {
             try {
                 $service = new ScheduleService(self::ACCESS_TOKEN);
-                $schedule1 = RestaurantSchedule::createByDay('mon');
-                $schedule2 = RestaurantSchedule::createByDay('tue');
-                $res = $service->createSchedule(20884, 20884, $schedule1);
-                $this->assertNotNull($res);
+                $businessId = 20884;
+                $productId = 110353;
+                $optionId = 158136;
+                $schedule = RestaurantSchedule::createByDay('mon');
+                $schedule->setPerBlockStock(30);
+                $schedule->setName('월요일입니다');
+
+                $scheduleCreated = ($service->createSchedule($businessId, $productId,
+                    $schedule))->setAssignToOption($optionId);
+
+                $res = $service->editSchedule($businessId, $productId,
+                    $scheduleCreated->getId(), $scheduleCreated);
+
+                $this->assertNull($res);
             } catch (\Exception $e) {
                 $error = $this->_catchException($e);
             }
