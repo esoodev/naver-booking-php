@@ -1,12 +1,16 @@
 <?php
 namespace NaverBooking\Objects;
 
+use NaverBooking\Objects\Dictionary;
+
 class RestaurantSchedule
 {
 
     public function __construct($data = null)
     {
-        foreach ($data as $key => $value) {$this->{$key} = $value;}
+        foreach ($data as $key => $value) {
+            if ($key !== 'url') {$this->{$key} = $value;}
+        }
     }
 
     public static function create($data = [])
@@ -33,8 +37,8 @@ class RestaurantSchedule
     {
         $day = strtolower($day);
         try {
-            // $day = array_key_exists($Dictionary::SCHEDULE_DAYS) ?
-            // Dictionary::SCHEDULE_DAYS[$day] : $day;
+            $day = array_key_exists($day, Dictionary::SCHEDULE_DAYS) ?
+            Dictionary::SCHEDULE_DAYS[$day] : $day;
         } catch (\Exception $e) {throw new \Exception("Invalid day '${$day}'.");}
 
         return self::create(['weekdays' => [$day]]);
@@ -154,36 +158,44 @@ class RestaurantSchedule
     {$this->startTime = (new \DateTime($datestring))->format('H:i');}
 
     public function setEndTime($datestring)
-    {$this->endTime = (new \DateTime($datestring))->format('H:i');}
+    {
+        $endTime = (new \DateTime($datestring))->format('H:i');
+        if ($endTime === '00:00') {$endTime = '23:59';}
+        $this->endTime = $endTime;
+    }
 
     public function setActiveWeekDays(array $weekdays)
     {$this->weekdays = $weekdays;}
 
-    public function setBlockUnitInMinutes(int $minutes)
-    {$this->duration = $minutes;}
+    public function setBlockUnitInMinutes($minutes)
+    {
+        if ($minutes % 30 || empty($minutes)) {throw new \Exception(
+            "Invalid schedule block unit in minutes - " .
+            "${minutes} must be divisible by 30.");}
+        $this->duration = $minutes;}
 
     public function setName($name)
     {$this->name = $name;}
 
-    public function setPerBlockStock(int $stock)
+    public function setPerBlockStock($stock)
     {$this->stock = $stock;}
 
-    public function setMinBookingCount(int $count)
+    public function setMinBookingCount($count)
     {$this->minBookingCount = $count;}
 
-    public function setMaxBookingCount(int $count)
+    public function setMaxBookingCount($count)
     {$this->maxBookingCount = $count;}
 
-    public function setAssignToOption(int $optionId)
+    public function setAssignToOption($optionId)
     {$this->setAssignToOptions([$optionId]);return $this;}
 
     public function setAssignToOptions(array $optionIds)
     {$this->options = $optionIds;return $this;}
 
-    public function addAssignToOption(int $optionId)
+    public function addAssignToOption($optionId)
     {array_push($this->options, $optionId);return $this;}
 
-    public function removeAssignToOption(int $optionId)
+    public function removeAssignToOption($optionId)
     {$this->options = array_diff($this->options, [$optionId]);return $this;}
 
     /**
