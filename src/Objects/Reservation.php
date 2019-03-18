@@ -109,7 +109,7 @@ class Reservation
         return $this->details['count'];
     }
 
-    public function getMenuPurchase()
+    public function getMenuPurchased()
     {
         return array_values($this->details['options']);
     }
@@ -142,6 +142,12 @@ class Reservation
         $hours = intval($this->minute / 60);
         $mins = $this->minute % 60;
         return (new \DateTime("${hours}:${mins}"))->format($format);
+    }
+
+    public function isNPayUsed()
+    {
+        return isset($this->details['isNPayUsed']) ?
+        ($this->details['isNPayUsed'] == 1) : false;
     }
 
     public function setData(array $data)

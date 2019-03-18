@@ -160,7 +160,7 @@ class Product
         if ($extraDesc->isValid()) {
             array_push($this->extraDescJson, $extraDesc->toArray());
         } else {
-            throw new Exception('Malformed extraDesc object :' .
+            throw new \Exception('Malformed extraDesc object :' .
                 json_encode($extraDesc->toArray(), JSON_UNESCAPED_UNICODE));
         }
     }
