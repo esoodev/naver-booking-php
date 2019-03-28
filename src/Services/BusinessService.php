@@ -31,12 +31,12 @@ class BusinessService extends ServiceBase
         return json_decode($res);
     }
 
-    public function editBusiness($businessId, array $data)
+    public function editBusiness($businessId, Business $business)
     {
         $data['businessId'] = $businessId;
         $res = $this->requestHandler->patch(
             $this->hostUri . "/v3.1/businesses/${businessId}",
-            json_encode($data), [204]);
+            json_encode($business), [204]);
         return json_decode($res);
     }
 

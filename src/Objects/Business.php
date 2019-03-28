@@ -23,6 +23,11 @@ class Business
 
     }
 
+    public static function create($data = [])
+    {
+        return new self($data);
+    }
+
     public static function example()
     {
         return new self(null, true);
@@ -245,7 +250,7 @@ class Business
                 $f['businessResources'][$i]['resourceTypeCode'] =
                 Dictionary::RESOURCE_TYPE_CODES['서브이미지'];
             }
-            $f['businessResources'][$i]['order'] = 0;
+            $f['businessResources'][$i]['order'] = $i;
             $f['businessResources'][$i]['resourceUrl'] = $imgUrls[$i];
         }
         if(!empty($f)) {$this->setData($f);} 
@@ -276,6 +281,9 @@ class Business
         $this->uncompletedBookingProcessCode =
         Dictionary::UNCOMPLETED_BOOKING_PROCESS_CODES[$key];
     }
+
+    public function toJson()
+    {return json_encode($this, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);}
 
     private static function _arraySetValuesNull(&$arr)
     {
